@@ -1,0 +1,38 @@
+package com.dangkhoa.socialnetwork.repositories
+
+import com.dangkhoa.socialnetwork.common.Constant
+import com.dangkhoa.socialnetwork.entities.usertopic.UserTopic
+import org.bson.Document
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.stereotype.Repository
+
+@Repository
+class UserTopicRepository {
+
+    @Autowired
+    MongoTemplate mongoTemplate
+
+    List<String> getTopicIdByUserId(String userId) {
+        List<String> result = new ArrayList<>()
+        mongoTemplate.getCollection(Constant.USER_TOPIC).find()
+                .filter([user_id: userId] as Document)
+                .projection([topic_id: 1] as Document)
+                .iterator()
+                .forEachRemaining { item -> result.add(item?.topic_id as String) }
+        return result
+    }
+
+    Long countUserByTopicId(String topicId){
+        Query query = new Query().addCriteria(Criteria.where("topic_id").is(topicId))
+        return mongoTemplate.count(query, UserTopic.class)
+    }
+
+    UserTopic save(UserTopic userTopic){
+        return mongoTemplate.save(userTopic)
+    }
+
+
+}
