@@ -76,4 +76,13 @@ class UserService {
         oldUser.password = StringUtils.isBlank(newUser.password) ? oldUser.password : bCryptPasswordEncoder.encode(newUser.password)
         oldUser.updatedAt = new Date().getTime()
     }
+
+    List<User> findByUserId(List<String> userIds) {
+        return userRepository.findByUserId(userIds)
+    }
+
+    List<UserResponse> getByUserId(List<String> userIds) {
+        List<User> users = findByUserId(userIds)
+        return userMapperFacade.mapAsList(users, UserResponse.class)
+    }
 }

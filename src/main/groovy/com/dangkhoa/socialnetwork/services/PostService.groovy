@@ -21,16 +21,20 @@ class PostService {
     PostRepository postRepository
     @Autowired
     UserService userService
+    @Autowired
+    CommentService commentService
 
     Post findByPostId(String id) {
         return postRepository.findByPostId(id)
     }
 
-    PostResponse getByPostId(String id) {
-        Post post = findByPostId(id)
+    PostResponse getByPostId(String postId) {
+        Post post = findByPostId(postId)
         UserResponse userResponse = userService.getByUserId(post.userId)
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
+
         postResponse.owner = userResponse
+        postResponse.numberComment = commentService.countByPostId(postId)
         return postResponse
     }
 
@@ -46,7 +50,11 @@ class PostService {
         List<Post> posts = findByUserId(userId, page)
         UserResponse userResponse = userService.getByUserId(userId)
         List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
-        postResponses.each { it.owner = userResponse }
+
+        postResponses.each { item ->
+            item.owner = userResponse
+            item.numberComment = commentService.countByPostId(item.postId)
+        }
         return postResponses
     }
 

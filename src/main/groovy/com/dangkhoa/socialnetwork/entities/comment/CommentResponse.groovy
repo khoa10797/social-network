@@ -1,5 +1,7 @@
 package com.dangkhoa.socialnetwork.entities.comment
 
+import com.dangkhoa.socialnetwork.entities.user.UserResponse
+
 class CommentResponse {
 
     String commentId
@@ -8,6 +10,7 @@ class CommentResponse {
     String content
     Integer numberLike
     Integer numberDislike
+    UserResponse owner
     Long createdAt
     Long updatedAt
 

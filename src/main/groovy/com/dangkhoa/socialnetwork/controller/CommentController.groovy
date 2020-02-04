@@ -27,8 +27,7 @@ class CommentController extends BaseController {
     ResponseEntity<ResponseData> findByPostId(@PathVariable String postId,
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer pageSize) {
-        List<Comment> comments = commentService.findByPostId(postId, page)
-        List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
+        List<CommentResponse> commentResponses = commentService.getByPostId(postId, page)
 
         ResponseData data = new ResponseData(
                 statusCode: 200,
@@ -42,8 +41,7 @@ class CommentController extends BaseController {
     ResponseEntity<ResponseData> findByUserId(@PathVariable String userId,
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer pageSize) {
-        List<Comment> comments = commentService.findByUserId(userId, page)
-        List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
+        List<CommentResponse> commentResponses = commentService.getByUserId(userId, page)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 meta: buildMetaResponse(page, pageSize),

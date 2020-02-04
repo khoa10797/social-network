@@ -15,15 +15,15 @@ class PostServiceTest {
 
     @Test
     void createPost() {
-        def post = new Post(
-                userId: "5e355d3d916bc36dd7dc4306",
-                postType: Constant.BLOG,
-                content: "Ma bư đang đọc thần chú",
-                images: [
-                        "../assets/images/majinbuu.png"
-                ],
-                numberLike: 100
-        )
-        postService.save(post)
+//        def post = new Post(
+//                userId: "5e355d3d916bc36dd7dc4306",
+//                postType: Constant.BLOG,
+//                content: "Ma bư đang đọc thần chú",
+//                images: [
+//                        "Mabu.jpg"
+//                ],
+//                numberLike: 100
+//        )
+//        postService.save(post)
     }
 }

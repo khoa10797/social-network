@@ -42,4 +42,9 @@ class CommentRepository {
         Query query = new Query(Criteria.where("comment_id").is(commentId))
         return mongoTemplate.remove(query, Comment.class).deletedCount
     }
+
+    Long countByPostId(String postId) {
+        Query query = new Query(Criteria.where("post_id").is(postId))
+        return mongoTemplate.count(query, Comment.class)
+    }
 }

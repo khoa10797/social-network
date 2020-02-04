@@ -25,7 +25,7 @@ class UserTopicRepository {
         return result
     }
 
-    Long countUserByTopicId(String topicId){
+    Long countByTopicId(String topicId){
         Query query = new Query().addCriteria(Criteria.where("topic_id").is(topicId))
         return mongoTemplate.count(query, UserTopic.class)
     }

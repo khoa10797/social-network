@@ -47,7 +47,7 @@ class UserRepository {
         return mongoTemplate.findOne(query, User.class)
     }
 
-    List<String> getRoleByUserId(String userId) {
+    List<String> findRoleByUserId(String userId) {
         List<String> result = new ArrayList<>()
         mongoTemplate.getCollection(Constant.USERS).find()
                 .filter([user_id: userId] as Document)
@@ -55,5 +55,10 @@ class UserRepository {
                 .iterator()
                 .forEachRemaining { item -> result.add(item?.role_ids as String) }
         return result
+    }
+
+    List<User> findByUserId(List<String> userIds) {
+        Query query = new Query(Criteria.where("user_id").in(userIds))
+        return mongoTemplate.find(query, User.class)
     }
 }

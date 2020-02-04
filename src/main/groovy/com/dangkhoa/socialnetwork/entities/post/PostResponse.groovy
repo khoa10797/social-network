@@ -13,6 +13,7 @@ class PostResponse {
     Integer numberLike
     Integer numberDislike
     UserResponse owner
+    Long numberComment
     Long createdAt
     Long updatedAt
 

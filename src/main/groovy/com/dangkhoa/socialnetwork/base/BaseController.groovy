@@ -35,7 +35,7 @@ class BaseController {
                 message: e.message,
                 error: e.stackTrace
         )
-        return new ResponseEntity<>(data, HttpStatus.UNPROCESSABLE_ENTITY)
+        return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
 }
