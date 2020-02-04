@@ -37,9 +37,8 @@ class UserController extends BaseController {
     }
 
     @GetMapping("/{userId}")
-    ResponseEntity<ResponseData> findByUserId(@PathVariable String userId){
-        User user = userService.findByUserId(userId)
-        UserResponse userResponse = userMapperFacade.map(user, UserResponse.class)
+    ResponseEntity<ResponseData> findByUserId(@PathVariable String userId) {
+        UserResponse userResponse = userService.getByUserId(userId)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: userResponse

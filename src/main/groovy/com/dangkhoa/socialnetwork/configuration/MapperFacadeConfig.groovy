@@ -33,6 +33,7 @@ class MapperFacadeConfig {
                 .field("userName", "userName")
                 .field("email", "email")
                 .field("roleIds", "roleIds")
+                .field("avatar", "avatar")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register()
@@ -45,6 +46,7 @@ class MapperFacadeConfig {
                 .field("email", "email")
                 .field("password", "password")
                 .field("roleIds", "roleIds")
+                .field("avatar", "avatar")
                 .register()
 
         return factory.getMapperFacade()
@@ -60,6 +62,7 @@ class MapperFacadeConfig {
                 .field("title", "title")
                 .field("postType", "postType")
                 .field("content", "content")
+                .field("images", "images")
                 .field("numberLike", "numberLike")
                 .field("numberDislike", "numberDislike")
                 .field("createdAt", "createdAt")
@@ -71,6 +74,7 @@ class MapperFacadeConfig {
                 .field("postType", "postType")
                 .field("title", "title")
                 .field("content", "content")
+                .field("images", "images")
                 .register()
 
         return factory.getMapperFacade()

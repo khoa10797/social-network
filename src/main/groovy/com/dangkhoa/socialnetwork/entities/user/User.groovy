@@ -16,6 +16,7 @@ class User {
     Integer sex
     List<String> postIds
     Boolean active
+    String avatar
     Long createdAt
     Long updatedAt
 

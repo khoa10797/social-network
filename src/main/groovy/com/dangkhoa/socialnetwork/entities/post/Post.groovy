@@ -1,5 +1,6 @@
 package com.dangkhoa.socialnetwork.entities.post
 
+
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document("posts")
@@ -11,6 +12,7 @@ class Post {
     String postType
     String title
     String content
+    List<String> images
     Integer numberLike
     Integer numberDislike
     Long createdAt

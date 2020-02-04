@@ -6,6 +6,7 @@ class PostRequest {
     String postType
     String title
     String content
+    List<String> images
     Integer numberLike
     Integer numberDislike
 

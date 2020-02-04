@@ -10,5 +10,6 @@ class UserRequest {
     List<String> roleIds
     String email
     Boolean active
+    String avatar
 
 }

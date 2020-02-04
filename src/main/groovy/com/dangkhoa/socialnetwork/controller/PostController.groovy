@@ -6,6 +6,7 @@ import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
 import com.dangkhoa.socialnetwork.services.PostService
+import com.dangkhoa.socialnetwork.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,11 +23,12 @@ class PostController extends BaseController {
     MapperFacade postMapperFacade
     @Autowired
     PostService postService
+    @Autowired
+    UserService userService
 
     @GetMapping("/{id}")
     ResponseEntity<ResponseData> findById(@PathVariable String id) {
-        Post post = postService.findByPostId(id)
-        PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
+        PostResponse postResponse = postService.getByPostId(id)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: postResponse
@@ -38,8 +40,7 @@ class PostController extends BaseController {
     ResponseEntity<ResponseData> findByUserId(@PathVariable String userId,
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer pageSize) {
-        List<Post> posts = postService.findByUserId(userId, page)
-        List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
+        List<PostResponse> postResponses = postService.getByUserId(userId, page)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 meta: buildMetaResponse(page, pageSize),

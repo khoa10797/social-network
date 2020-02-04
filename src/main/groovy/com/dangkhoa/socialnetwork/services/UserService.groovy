@@ -2,19 +2,21 @@ package com.dangkhoa.socialnetwork.services
 
 import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.user.User
+import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import com.dangkhoa.socialnetwork.repositories.UserRepository
+import ma.glasnost.orika.MapperFacade
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
-import java.time.ZonedDateTime
-
 @Service
 class UserService {
 
+    @Autowired
+    MapperFacade userMapperFacade
     @Autowired
     UserRepository userRepository
     @Autowired
@@ -30,6 +32,11 @@ class UserService {
 
     User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
+    }
+
+    UserResponse getByUserId(String userId) {
+        User user = findByUserId(userId)
+        return userMapperFacade.map(user, UserResponse.class)
     }
 
     Long remove(String userId) {
