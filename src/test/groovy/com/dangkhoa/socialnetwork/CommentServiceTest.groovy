@@ -14,11 +14,11 @@ class CommentServiceTest {
 
     @Test
     void createComment() {
-//        def comment = new Comment(
-//                postId: "5e36e1f8b0c07e397fb46a19",
-//                userId: "5e355d3d916bc36dd7dc4306",
-//                content: "Comment test 2"
-//        )
-//        commentService.save(comment)
+        def comment = new Comment(
+                postId: "5e36e1f8b0c07e397fb46a19",
+                userId: "5e355d3d916bc36dd7dc4306",
+                content: "Comment test 5"
+        )
+        commentService.save(comment)
     }
 }

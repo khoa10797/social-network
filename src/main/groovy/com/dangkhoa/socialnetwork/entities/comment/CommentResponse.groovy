@@ -7,10 +7,12 @@ class CommentResponse {
     String commentId
     String postId
     String userId
+    String parentId
     String content
     Integer numberLike
     Integer numberDislike
-    UserResponse owner
+    UserResponse user
+    List<CommentResponse> childComments
     Long createdAt
     Long updatedAt
 

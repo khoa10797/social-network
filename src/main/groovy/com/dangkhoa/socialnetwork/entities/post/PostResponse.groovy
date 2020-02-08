@@ -12,7 +12,7 @@ class PostResponse {
     List<String> images
     Integer numberLike
     Integer numberDislike
-    UserResponse owner
+    UserResponse user
     Long numberComment
     Long createdAt
     Long updatedAt

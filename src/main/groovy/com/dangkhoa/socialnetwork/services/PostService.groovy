@@ -33,7 +33,7 @@ class PostService {
         UserResponse userResponse = userService.getByUserId(post.userId)
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
 
-        postResponse.owner = userResponse
+        postResponse.user = userResponse
         postResponse.numberComment = commentService.countByPostId(postId)
         return postResponse
     }
@@ -52,7 +52,7 @@ class PostService {
         List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
 
         postResponses.each { item ->
-            item.owner = userResponse
+            item.user = userResponse
             item.numberComment = commentService.countByPostId(item.postId)
         }
         return postResponses

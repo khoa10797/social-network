@@ -30,7 +30,7 @@ class CommentService {
         Comment comment = findByCommentId(commentId)
         UserResponse userResponse = userService.getByUserId(comment.userId)
         CommentResponse commentResponse = commentMapperFacade.map(comment, CommentResponse.class)
-        commentResponse.owner = userResponse
+        commentResponse.user = userResponse
         return commentResponse
     }
 
@@ -45,11 +45,12 @@ class CommentService {
     List<CommentResponse> getByPostId(String postId, Integer page) {
         List<Comment> comments = findByPostId(postId, page)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
-        Set<String> userIds = commentResponses.collect { it.userId }.toSet()
-        List<UserResponse> userResponses = userService.getByUserId(userIds.toList())
-        commentResponses.each {commentResponse ->
-            commentResponse.owner = userResponses.find {it.userId == commentResponse.userId }
-        }
+        fillUserResponses(commentResponses)
+        commentResponses.findAll { it.parentId == null }
+                .each { item ->
+                    item.childComments = getByCommentParentId(item.commentId)
+                }
+
         return commentResponses
     }
 
@@ -65,7 +66,7 @@ class CommentService {
         List<Comment> comments = findByUserId(userId, page)
         UserResponse userResponse = userService.getByUserId(userId)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
-        commentResponses.each { it.owner = userResponse }
+        commentResponses.each { it.user = userResponse }
         return commentResponses
     }
 
@@ -99,4 +100,24 @@ class CommentService {
     Long countByPostId(String postId) {
         return commentRepository.countByPostId(postId)
     }
+
+    List<Comment> findByCommentParentId(String commentParentId) {
+        return commentRepository.findByCommentParentId(commentParentId)
+    }
+
+    List<CommentResponse> getByCommentParentId(String commentParentId) {
+        List<Comment> comments = findByCommentParentId(commentParentId)
+        List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
+        fillUserResponses(commentResponses)
+        return commentResponses
+    }
+
+    private void fillUserResponses(List<CommentResponse> commentResponses) {
+        Set<String> userIds = commentResponses.collect { it.userId }.toSet()
+        List<UserResponse> userResponses = userService.getByUserId(userIds.toList())
+        commentResponses.each { commentResponse ->
+            commentResponse.user = userResponses.find { it.userId == commentResponse.userId }
+        }
+    }
+
 }

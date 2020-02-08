@@ -22,7 +22,9 @@ class CommentRepository {
         Query query = new Query(
                 limit: limit,
                 skip: limit * (page - 1 < 0 ? 0 : page - 1)
-        ).addCriteria(Criteria.where("post_id").is(postId))
+        )
+        Criteria criteria = Criteria.where("post_id").is(postId).and("parent_id").is(null)
+        query.addCriteria(criteria)
         return mongoTemplate.find(query, Comment.class)
     }
 
@@ -46,5 +48,10 @@ class CommentRepository {
     Long countByPostId(String postId) {
         Query query = new Query(Criteria.where("post_id").is(postId))
         return mongoTemplate.count(query, Comment.class)
+    }
+
+    List<Comment> findByCommentParentId(String commentParentId) {
+        Query query = new Query(Criteria.where("parent_id").is(commentParentId))
+        return mongoTemplate.find(query, Comment.class)
     }
 }
