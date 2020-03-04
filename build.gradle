@@ -30,6 +30,8 @@ dependencies {
 
     compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

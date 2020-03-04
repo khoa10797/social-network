@@ -18,8 +18,14 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-//        def user = new User(name: 'Ma bư', userName: 'admin', password: 'admin', age: 23)
-//        userService.save(user)
+        def user = new User(
+                name: 'Ma bư',
+                userName: 'admin',
+                password: 'admin',
+                age: 23,
+                avatar: "majinbuu.png"
+        )
+        userService.save(user)
     }
 
     @Test

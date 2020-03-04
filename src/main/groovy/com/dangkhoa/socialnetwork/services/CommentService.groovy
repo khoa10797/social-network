@@ -35,31 +35,30 @@ class CommentService {
     }
 
     List<Comment> findByPostId(String postId, Integer page, Integer limit) {
-        return commentRepository.findByPostId(postId, page ?: 1, limit ?: Constant.DEFAULT_PAGE_SIZE)
+        return commentRepository.findByPostId(postId, page ?: 1, limit ?: Constant.DEFAULT_COMMENT_SIZE)
     }
 
     List<Comment> findByPostId(String postId, Integer page) {
-        return findByPostId(postId, page, Constant.DEFAULT_PAGE_SIZE)
+        return findByPostId(postId, page, Constant.DEFAULT_COMMENT_SIZE)
     }
 
     List<CommentResponse> getByPostId(String postId, Integer page) {
         List<Comment> comments = findByPostId(postId, page)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
         fillUserResponses(commentResponses)
-        commentResponses.findAll { it.parentId == null }
-                .each { item ->
-                    item.childComments = getByCommentParentId(item.commentId)
-                }
+        commentResponses.each { item ->
+            item.childComments = getByCommentParentId(item.commentId)
+        }
 
         return commentResponses
     }
 
     List<Comment> findByUserId(String userId, Integer page, Integer limit) {
-        return commentRepository.findByUserId(userId, page ?: 1, limit ?: Constant.DEFAULT_PAGE_SIZE)
+        return commentRepository.findByUserId(userId, page ?: 1, limit ?: Constant.DEFAULT_COMMENT_SIZE)
     }
 
     List<Comment> findByUserId(String userId, Integer page) {
-        return findByUserId(userId, page, Constant.DEFAULT_PAGE_SIZE)
+        return findByUserId(userId, page, Constant.DEFAULT_COMMENT_SIZE)
     }
 
     List<CommentResponse> getByUserId(String userId, Integer page) {
