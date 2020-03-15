@@ -1,29 +1,29 @@
-package com.dangkhoa.socialnetwork.configuration
+package com.dangkhoa.socialnetwork.configuration;
 
-import com.dangkhoa.socialnetwork.entities.comment.Comment
-import com.dangkhoa.socialnetwork.entities.comment.CommentRequest
-import com.dangkhoa.socialnetwork.entities.comment.CommentResponse
-import com.dangkhoa.socialnetwork.entities.post.Post
-import com.dangkhoa.socialnetwork.entities.post.PostRequest
-import com.dangkhoa.socialnetwork.entities.post.PostResponse
-import com.dangkhoa.socialnetwork.entities.topic.Topic
-import com.dangkhoa.socialnetwork.entities.topic.TopicRequest
-import com.dangkhoa.socialnetwork.entities.topic.TopicResponse
-import com.dangkhoa.socialnetwork.entities.user.User
-import com.dangkhoa.socialnetwork.entities.user.UserRequest
-import com.dangkhoa.socialnetwork.entities.user.UserResponse
-import ma.glasnost.orika.MapperFacade
-import ma.glasnost.orika.MapperFactory
-import ma.glasnost.orika.impl.DefaultMapperFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import com.dangkhoa.socialnetwork.entities.comment.Comment;
+import com.dangkhoa.socialnetwork.entities.comment.CommentRequest;
+import com.dangkhoa.socialnetwork.entities.comment.CommentResponse;
+import com.dangkhoa.socialnetwork.entities.post.Post;
+import com.dangkhoa.socialnetwork.entities.post.PostRequest;
+import com.dangkhoa.socialnetwork.entities.post.PostResponse;
+import com.dangkhoa.socialnetwork.entities.topic.Topic;
+import com.dangkhoa.socialnetwork.entities.topic.TopicRequest;
+import com.dangkhoa.socialnetwork.entities.topic.TopicResponse;
+import com.dangkhoa.socialnetwork.entities.user.User;
+import com.dangkhoa.socialnetwork.entities.user.UserRequest;
+import com.dangkhoa.socialnetwork.entities.user.UserResponse;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class MapperFacadeConfig {
+public class MapperFacadeConfig {
 
     @Bean
-    MapperFacade userMapperFacade() {
-        MapperFactory factory = new DefaultMapperFactory.Builder().build()
+    public MapperFacade userMapperFacade() {
+        MapperFactory factory = new DefaultMapperFactory.Builder().build();
 
         factory.classMap(User.class, UserResponse.class)
                 .field("userId", "userId")
@@ -36,7 +36,7 @@ class MapperFacadeConfig {
                 .field("avatar", "avatar")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
-                .register()
+                .register();
 
         factory.classMap(UserRequest.class, User.class)
                 .field("name", "name")
@@ -47,14 +47,14 @@ class MapperFacadeConfig {
                 .field("password", "password")
                 .field("roleIds", "roleIds")
                 .field("avatar", "avatar")
-                .register()
+                .register();
 
-        return factory.getMapperFacade()
+        return factory.getMapperFacade();
     }
 
     @Bean
-    MapperFacade postMapperFacade() {
-        MapperFactory factory = new DefaultMapperFactory.Builder().build()
+    public MapperFacade postMapperFacade() {
+        MapperFactory factory = new DefaultMapperFactory.Builder().build();
 
         factory.classMap(Post.class, PostResponse.class)
                 .field("postId", "postId")
@@ -67,7 +67,7 @@ class MapperFacadeConfig {
                 .field("numberDislike", "numberDislike")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
-                .register()
+                .register();
 
         factory.classMap(PostRequest.class, Post.class)
                 .field("userId", "userId")
@@ -75,14 +75,14 @@ class MapperFacadeConfig {
                 .field("title", "title")
                 .field("content", "content")
                 .field("images", "images")
-                .register()
+                .register();
 
-        return factory.getMapperFacade()
+        return factory.getMapperFacade();
     }
 
     @Bean
-    MapperFacade commentMapperFacade() {
-        MapperFactory factory = new DefaultMapperFactory.Builder().build()
+    public MapperFacade commentMapperFacade() {
+        MapperFactory factory = new DefaultMapperFactory.Builder().build();
 
         factory.classMap(Comment.class, CommentResponse.class)
                 .field("commentId", "commentId")
@@ -94,7 +94,7 @@ class MapperFacadeConfig {
                 .field("numberDislike", "numberDislike")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
-                .register()
+                .register();
 
         factory.classMap(CommentRequest.class, Comment.class)
                 .field("postId", "postId")
@@ -103,14 +103,14 @@ class MapperFacadeConfig {
                 .field("content", "content")
                 .field("numberLike", "numberLike")
                 .field("numberDislike", "numberDislike")
-                .register()
+                .register();
 
-        return factory.getMapperFacade()
+        return factory.getMapperFacade();
     }
 
     @Bean
-    MapperFacade topicMapperFacade() {
-        MapperFactory factory = new DefaultMapperFactory.Builder().build()
+    public MapperFacade topicMapperFacade() {
+        MapperFactory factory = new DefaultMapperFactory.Builder().build();
 
         factory.classMap(Topic.class, TopicResponse.class)
                 .field("topicId", "topicId")
@@ -118,13 +118,13 @@ class MapperFacadeConfig {
                 .field("numberFollow", "numberFollow")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
-                .register()
+                .register();
 
         factory.classMap(TopicRequest.class, Topic.class)
                 .field("name", "name")
                 .field("numberFollow", "numberFollow")
-                .register()
+                .register();
 
-        return factory.getMapperFacade()
+        return factory.getMapperFacade();
     }
 }

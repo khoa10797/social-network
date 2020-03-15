@@ -33,6 +33,7 @@ class PostController extends BaseController {
                 statusCode: 200,
                 data: postResponse
         )
+
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
@@ -46,22 +47,29 @@ class PostController extends BaseController {
                 meta: buildMetaResponse(page, pageSize),
                 data: postResponses
         )
+
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
     @PostMapping
-    ResponseEntity add(@RequestBody @Valid PostRequest postRequest) {
+    ResponseEntity<ResponseData> add(@RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
-        postService.save(post)
-        return new ResponseEntity(HttpStatus.CREATED)
+        Post insertedPost = postService.save(post)
+        PostResponse postResponse = postMapperFacade.map(insertedPost, PostResponse.class)
+        ResponseData data = new ResponseData(data: postResponse)
+
+        return new ResponseEntity(data, HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
-    ResponseEntity update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest) {
+    ResponseEntity<ResponseData> update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
         post.postId = id
-        postService.save(post)
-        return new ResponseEntity(HttpStatus.NO_CONTENT)
+        Post updatedPost = postService.save(post)
+        PostResponse postResponse = postMapperFacade.map(updatedPost, PostResponse.class)
+        ResponseData data = new ResponseData(data: postResponse)
+
+        return new ResponseEntity(data, HttpStatus.OK)
     }
 
     @DeleteMapping("/{id}")

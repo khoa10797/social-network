@@ -28,12 +28,12 @@ class CommentController extends BaseController {
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer pageSize) {
         List<CommentResponse> commentResponses = commentService.getByPostId(postId, page)
-
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 meta: buildMetaResponse(page, pageSize),
                 data: commentResponses
         )
+
         return new ResponseEntity<ResponseData>(data, HttpStatus.OK)
     }
 
@@ -47,22 +47,29 @@ class CommentController extends BaseController {
                 meta: buildMetaResponse(page, pageSize),
                 data: commentResponses
         )
+
         return new ResponseEntity<ResponseData>(data, HttpStatus.OK)
     }
 
     @PostMapping
-    ResponseEntity add(@RequestBody @Valid CommentRequest commentRequest) {
+    ResponseEntity<ResponseData> add(@RequestBody @Valid CommentRequest commentRequest) {
         Comment comment = commentMapperFacade.map(commentRequest, Comment.class)
-        commentService.save(comment)
-        return new ResponseEntity(HttpStatus.CREATED)
+        Comment insertedComment = commentService.save(comment)
+        CommentResponse commentResponse = commentMapperFacade.map(insertedComment, CommentResponse.class)
+        ResponseData data = new ResponseData(data: commentResponse)
+
+        return new ResponseEntity(data, HttpStatus.CREATED)
     }
 
     @PutMapping("/{commentId}")
-    ResponseEntity update(@PathVariable String commentId, @RequestBody @Valid CommentRequest commentRequest) {
+    ResponseEntity<ResponseData> update(@PathVariable String commentId, @RequestBody @Valid CommentRequest commentRequest) {
         Comment comment = commentMapperFacade.map(commentRequest, Comment.class)
         comment.commentId = commentId
-        commentService.save(comment)
-        return new ResponseEntity(HttpStatus.NO_CONTENT)
+        Comment updatedComment = commentService.save(comment)
+        CommentResponse commentResponse = commentMapperFacade.map(updatedComment, CommentResponse.class)
+        ResponseData data = new ResponseData(data: commentResponse)
+
+        return new ResponseEntity(data, HttpStatus.OK)
     }
 
     @DeleteMapping("/{commentId}")

@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'groovy'
 }
@@ -26,11 +26,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.codehaus.groovy:groovy:2.5.8'
 
     compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
 
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
