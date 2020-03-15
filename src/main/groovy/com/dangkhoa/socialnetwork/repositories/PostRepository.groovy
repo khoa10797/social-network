@@ -1,10 +1,13 @@
 package com.dangkhoa.socialnetwork.repositories
 
+import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.post.Post
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -33,5 +36,14 @@ class PostRepository {
     Long remove(String postId) {
         Query query = new Query(Criteria.where("post_id").is(postId))
         return mongoTemplate.remove(query, Post.class).deletedCount
+    }
+
+    void updateNumberComment(String postId, Integer quantity) {
+        Document filter = [post_id: postId]
+        Document update = [
+                $inc: [number_comment: quantity]
+        ]
+
+        mongoTemplate.getCollection(Constant.POSTS).updateOne(filter, update)
     }
 }

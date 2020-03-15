@@ -21,8 +21,6 @@ class PostService {
     PostRepository postRepository
     @Autowired
     UserService userService
-    @Autowired
-    CommentService commentService
 
     Post findByPostId(String id) {
         return postRepository.findByPostId(id)
@@ -34,7 +32,6 @@ class PostService {
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
 
         postResponse.user = userResponse
-        postResponse.numberComment = commentService.countByPostId(postId)
         return postResponse
     }
 
@@ -53,7 +50,6 @@ class PostService {
 
         postResponses.each { item ->
             item.user = userResponse
-            item.numberComment = commentService.countByPostId(item.postId)
         }
         return postResponses
     }
@@ -77,12 +73,16 @@ class PostService {
         return postRepository.remove(id)
     }
 
-    @SuppressWarnings("Duplicates")
     static void setUpdateValue(Post oldPost, Post newPost) {
         oldPost.content = StringUtils.isBlank(newPost.content) ? oldPost.content : newPost.content
         oldPost.postType = StringUtils.isBlank(newPost.postType) ? oldPost.postType : newPost.postType
+        oldPost.numberComment = newPost.numberComment == null ? oldPost.numberComment : newPost.numberComment
         oldPost.numberLike = newPost.numberLike == null ? oldPost.numberLike : newPost.numberLike
         oldPost.numberDislike = newPost.numberDislike == null ? oldPost.numberDislike : newPost.numberDislike
         oldPost.updatedAt = new Date().getTime()
+    }
+
+    void updateNumberComment(String postId, Integer quantity) {
+        postRepository.updateNumberComment(postId, quantity)
     }
 }

@@ -9,5 +9,6 @@ class Constant {
     static final String USERS = "users"
     static final String BLOG = "blog"
     static final String QUESTION = "question"
+    static final String POSTS = "posts"
 
 }

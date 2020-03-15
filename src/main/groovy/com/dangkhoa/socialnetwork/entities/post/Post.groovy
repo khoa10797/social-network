@@ -15,6 +15,7 @@ class Post {
     List<String> images
     Integer numberLike
     Integer numberDislike
+    Integer numberComment
     Long createdAt
     Long updatedAt
 

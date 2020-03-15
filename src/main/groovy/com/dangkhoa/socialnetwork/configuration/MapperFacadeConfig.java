@@ -65,6 +65,7 @@ public class MapperFacadeConfig {
                 .field("images", "images")
                 .field("numberLike", "numberLike")
                 .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
@@ -75,6 +76,9 @@ public class MapperFacadeConfig {
                 .field("title", "title")
                 .field("content", "content")
                 .field("images", "images")
+                .field("numberLike", "numberLike")
+                .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
                 .register();
 
         return factory.getMapperFacade();

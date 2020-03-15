@@ -21,6 +21,8 @@ class CommentService {
     CommentRepository commentRepository
     @Autowired
     UserService userService
+    @Autowired
+    PostService postService
 
     Comment findByCommentId(String commentId) {
         return commentRepository.findByCommentId(commentId)
@@ -71,10 +73,7 @@ class CommentService {
 
     Comment save(Comment comment) {
         if (StringUtils.isBlank(comment.commentId)) {
-            comment.commentId = new ObjectId().toString()
-            comment.createdAt = new Date().getTime()
-            comment.updatedAt = new Date().getTime()
-            return commentRepository.save(comment)
+            return addComment(comment)
         }
         Comment existComment = findByCommentId(comment.commentId)
         if (existComment == null)
@@ -84,11 +83,23 @@ class CommentService {
         return commentRepository.save(existComment)
     }
 
-    Long remove(String commentId) {
-        return commentRepository.remove(commentId)
+    private Comment addComment(Comment comment) {
+        comment.commentId = new ObjectId().toString()
+        comment.createdAt = new Date().getTime()
+        comment.updatedAt = new Date().getTime()
+        postService.updateNumberComment(comment.postId, 1)
+
+        return commentRepository.save(comment)
     }
 
-    @SuppressWarnings("Duplicates")
+    Comment remove(String commentId) {
+        Comment comment = commentRepository.findByCommentId(commentId)
+        postService.updateNumberComment(comment.postId, -1)
+        commentRepository.remove(commentId)
+
+        return comment
+    }
+
     static void setUpdateValue(Comment oldComment, Comment newComment) {
         oldComment.content = StringUtils.isBlank(newComment.content) ? oldComment.content : newComment.content
         oldComment.numberLike = newComment.numberLike == null ? oldComment.numberLike : newComment.numberLike
