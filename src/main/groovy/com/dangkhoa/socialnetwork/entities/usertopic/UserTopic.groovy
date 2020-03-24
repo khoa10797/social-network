@@ -13,7 +13,7 @@ class UserTopic {
     Long updatedAt
 
     static class FollowStatus{
-        static Integer FOLLOW = 1
-        static Integer UNFOLLOW = -1
+        static final Integer FOLLOW = 1
+        static final Integer UNFOLLOW = -1
     }
 }

@@ -30,8 +30,6 @@ class UserServiceTest {
 
     @Test
     void userMapper(){
-//        def user = new User(name: 'Ma bư', userName: 'admin', password: 'admin', age: 23, createdAt: new Date().getTime())
-//        def userResponse = userMapperFacade.map(user, UserResponse.class)
-//        println(userResponse.createdAt.length())
+
     }
 }

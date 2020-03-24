@@ -14,6 +14,7 @@ class PostResponse {
     Integer numberDislike
     UserResponse user
     Long numberComment
+    String likeStatus
     Long createdAt
     Long updatedAt
 

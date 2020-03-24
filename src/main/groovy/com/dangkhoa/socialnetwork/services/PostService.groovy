@@ -4,6 +4,7 @@ import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import com.dangkhoa.socialnetwork.repositories.PostRepository
 import ma.glasnost.orika.MapperFacade
@@ -21,6 +22,8 @@ class PostService {
     PostRepository postRepository
     @Autowired
     UserService userService
+    @Autowired
+    UserPostService userPostService
 
     Post findByPostId(String id) {
         return postRepository.findByPostId(id)
@@ -48,9 +51,18 @@ class PostService {
         UserResponse userResponse = userService.getByUserId(userId)
         List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
 
+        List<String> postIds = postResponses.collect { postResponse -> postResponse.postId }
+        List<UserPost> userPosts = userPostService.findByUserIdAndPostIds(userId, postIds)
+
         postResponses.each { item ->
             item.user = userResponse
+            userPosts.each { userPost ->
+                if (userPost.postId == item.postId) {
+                    item.likeStatus = userPost.likeStatus
+                }
+            }
         }
+
         return postResponses
     }
 
@@ -84,5 +96,9 @@ class PostService {
 
     void updateNumberComment(String postId, Integer quantity) {
         postRepository.updateNumberComment(postId, quantity)
+    }
+
+    void updateNumberLike(String postId, Integer quantity) {
+        postRepository.updateNumberLike(postId, quantity)
     }
 }

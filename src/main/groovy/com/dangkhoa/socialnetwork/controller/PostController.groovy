@@ -5,7 +5,9 @@ import com.dangkhoa.socialnetwork.common.ResponseData
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.services.PostService
+import com.dangkhoa.socialnetwork.services.UserPostService
 import com.dangkhoa.socialnetwork.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +27,8 @@ class PostController extends BaseController {
     PostService postService
     @Autowired
     UserService userService
+    @Autowired
+    UserPostService userPostService
 
     @GetMapping("/{id}")
     ResponseEntity<ResponseData> findById(@PathVariable String id) {
@@ -76,5 +80,12 @@ class PostController extends BaseController {
     ResponseEntity remove(@PathVariable String id) {
         postService.remove(id)
         return new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PutMapping("/like")
+    ResponseEntity<ResponseData> updateLikeStatus(@RequestBody UserPost userPost) {
+        UserPost savedUserPost = userPostService.save(userPost)
+        ResponseData data = new ResponseData(data: savedUserPost)
+        return new ResponseEntity<>(data, HttpStatus.OK)
     }
 }

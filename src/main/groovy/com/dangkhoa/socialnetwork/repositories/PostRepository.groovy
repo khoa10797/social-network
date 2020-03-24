@@ -46,4 +46,13 @@ class PostRepository {
 
         mongoTemplate.getCollection(Constant.POSTS).updateOne(filter, update)
     }
+
+    void updateNumberLike(String postId, Integer quantity) {
+        Document filter = [post_id: postId]
+        Document update = [
+                $inc: [number_like: quantity]
+        ]
+
+        mongoTemplate.getCollection(Constant.POSTS).updateOne(filter, update)
+    }
 }

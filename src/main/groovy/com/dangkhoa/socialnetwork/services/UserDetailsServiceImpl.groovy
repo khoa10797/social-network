@@ -20,7 +20,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUserName(username)
         List<GrantedAuthority> authorities = getUserAuthority(user.roleIds)
-        return builUserDetails(user, authorities)
+        return buildUserDetails(user, authorities)
     }
 
     List<GrantedAuthority> getUserAuthority(List<String> roleIds) {
@@ -29,7 +29,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
         return new ArrayList<>(roles)
     }
 
-    UserDetails builUserDetails(User user, List<GrantedAuthority> authorities) {
+    UserDetails buildUserDetails(User user, List<GrantedAuthority> authorities) {
         return new SpringUser(user.userName, user.password, user.active, true, true, true, authorities)
     }
 }
