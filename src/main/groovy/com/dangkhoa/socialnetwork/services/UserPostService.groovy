@@ -3,8 +3,6 @@ package com.dangkhoa.socialnetwork.services
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.repositories.UserPostRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.query.Criteria
-import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,14 +14,20 @@ class UserPostService {
     PostService postService
 
     UserPost save(UserPost userPost) {
-        UserPost savedUserPost = userPostRepository.save(userPost)
-        Integer updatedNumberLike = UserPost.LikeStatus.LIKE == userPost.likeStatus ? 1 : -1
+        UserPost existUserPost = userPostRepository.findByUserIdAndPostId(userPost.userId, userPost.postId)
+
+        Integer updatedNumberLike = UserPost.UserStatus.LIKE == userPost.userStatus ? 1 : -1
         postService.updateNumberLike(userPost.postId, updatedNumberLike)
-        return savedUserPost
+
+        if (existUserPost == null) {
+            return userPostRepository.save(userPost)
+        }
+        existUserPost.userStatus = userPost.userStatus
+        return userPostRepository.save(existUserPost)
     }
 
     List<UserPost> findByUserIdAndPostIds(String userId, List<String> postIds) {
-        return userPostRepository.findByUserIdAndPostId(userId, postIds)
+        return userPostRepository.findByUserIdAndPostIds(userId, postIds)
     }
 
 }

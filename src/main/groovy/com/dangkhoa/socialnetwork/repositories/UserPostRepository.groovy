@@ -18,10 +18,17 @@ class UserPostRepository {
         return mongoTemplate.save(userPost)
     }
 
-    List<UserPost> findByUserIdAndPostId(String userId, List<String> postIds) {
+    List<UserPost> findByUserIdAndPostIds(String userId, List<String> postIds) {
         Query query = new Query()
                 .addCriteria(Criteria.where("user_id").is(userId))
                 .addCriteria(Criteria.where("post_id").in(postIds))
         return mongoTemplate.find(query, UserPost.class)
+    }
+
+    UserPost findByUserIdAndPostId(String userId, String postId) {
+        Query query = new Query()
+                .addCriteria(Criteria.where("user_id").is(userId))
+                .addCriteria(Criteria.where("post_id").is(postId))
+        return mongoTemplate.findOne(query, UserPost.class)
     }
 }

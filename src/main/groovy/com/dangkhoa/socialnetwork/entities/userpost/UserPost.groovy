@@ -8,9 +8,9 @@ class UserPost {
     String id
     String userId
     String postId
-    String likeStatus
+    String userStatus
 
-    static class LikeStatus {
+    static class UserStatus {
         static final String LIKE = "like"
         static final String NORMAL = "normal"
         static final String DISLIKE = "dislike"

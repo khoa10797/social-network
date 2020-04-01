@@ -18,7 +18,7 @@ class UserPostTest {
                 new UserPost(
                         userId: "5e5bc9c6958dba414452a851",
                         postId: "5e5bca0efd1fd8770d812158",
-                        likeStatus: "like"
+                        userStatus: "like"
                 )
         )
     }

@@ -58,7 +58,7 @@ class PostService {
             item.user = userResponse
             userPosts.each { userPost ->
                 if (userPost.postId == item.postId) {
-                    item.likeStatus = userPost.likeStatus
+                    item.userStatus = userPost.userStatus
                 }
             }
         }
@@ -95,10 +95,18 @@ class PostService {
     }
 
     void updateNumberComment(String postId, Integer quantity) {
+        Post post = postRepository.findByPostId(postId)
+        if (post.numberComment <= 0 && quantity < 0) {
+            return
+        }
         postRepository.updateNumberComment(postId, quantity)
     }
 
     void updateNumberLike(String postId, Integer quantity) {
+        Post post = postRepository.findByPostId(postId)
+        if (post.numberLike <= 0 && quantity < 0) {
+            return
+        }
         postRepository.updateNumberLike(postId, quantity)
     }
 }
