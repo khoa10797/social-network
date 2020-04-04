@@ -5,6 +5,7 @@ import com.dangkhoa.socialnetwork.common.ResponseData
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.services.PostService
 import com.dangkhoa.socialnetwork.services.UserPostService
@@ -59,7 +60,10 @@ class PostController extends BaseController {
     ResponseEntity<ResponseData> add(@RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
         Post insertedPost = postService.save(post)
+
         PostResponse postResponse = postMapperFacade.map(insertedPost, PostResponse.class)
+        UserResponse userResponse = userService.getByUserId(postResponse.userId)
+        postResponse.user = userResponse
         ResponseData data = new ResponseData(data: postResponse)
 
         return new ResponseEntity(data, HttpStatus.CREATED)

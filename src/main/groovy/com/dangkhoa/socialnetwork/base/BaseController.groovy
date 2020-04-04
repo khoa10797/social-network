@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 class BaseController {
 
-    ResponseData.Meta buildMetaResponse(String message = "", Integer page, Integer pageSize) {
+    static ResponseData.Meta buildMetaResponse(String message = "", Integer page, Integer pageSize) {
         return new ResponseData.Meta(
                 message: message,
                 page: page ?: 1,
