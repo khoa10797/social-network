@@ -1,6 +1,8 @@
 package com.dangkhoa.socialnetwork.repositories
 
+import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.comment.Comment
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -53,5 +55,19 @@ class CommentRepository {
     List<Comment> findByCommentParentId(String commentParentId) {
         Query query = new Query(Criteria.where("parent_id").is(commentParentId))
         return mongoTemplate.find(query, Comment.class)
+    }
+
+    Long removeByPostId(String postId) {
+        Query query = new Query(Criteria.where("post_id").is(postId))
+        return mongoTemplate.remove(query, Comment.class).deletedCount
+    }
+
+    void updateNumberLike(String commentId, Integer quantity) {
+        Document filter = [comment_id: commentId]
+        Document update = [
+                $inc: [number_like: quantity]
+        ]
+
+        mongoTemplate.getCollection(Constant.COMMENTS).updateOne(filter, update)
     }
 }

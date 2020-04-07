@@ -31,4 +31,9 @@ class UserPostRepository {
                 .addCriteria(Criteria.where("post_id").is(postId))
         return mongoTemplate.findOne(query, UserPost.class)
     }
+
+    Long removeByPostId(String postId) {
+        Query query = new Query(Criteria.where("post_id").is(postId))
+        return mongoTemplate.remove(query, UserPost.class).deletedCount
+    }
 }

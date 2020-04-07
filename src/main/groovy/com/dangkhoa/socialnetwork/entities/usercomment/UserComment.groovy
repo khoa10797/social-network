@@ -1,13 +1,13 @@
-package com.dangkhoa.socialnetwork.entities.userpost
+package com.dangkhoa.socialnetwork.entities.usercomment
 
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document("user_post")
-class UserPost {
+@Document("user_comment")
+class UserComment {
 
     String id
     String userId
-    String postId
+    String commentId
     String userStatus
 
     static class UserStatus {

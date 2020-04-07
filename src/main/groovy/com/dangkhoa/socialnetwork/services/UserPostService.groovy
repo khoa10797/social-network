@@ -30,4 +30,7 @@ class UserPostService {
         return userPostRepository.findByUserIdAndPostIds(userId, postIds)
     }
 
+    Long removeByPostId(String postId) {
+        return userPostRepository.removeByPostId(postId)
+    }
 }

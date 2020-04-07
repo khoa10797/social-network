@@ -6,7 +6,9 @@ import com.dangkhoa.socialnetwork.entities.comment.Comment
 import com.dangkhoa.socialnetwork.entities.comment.CommentRequest
 import com.dangkhoa.socialnetwork.entities.comment.CommentResponse
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.usercomment.UserComment
 import com.dangkhoa.socialnetwork.services.CommentService
+import com.dangkhoa.socialnetwork.services.UserCommentService
 import com.dangkhoa.socialnetwork.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +28,8 @@ class CommentController extends BaseController {
     CommentService commentService
     @Autowired
     UserService userService
+    @Autowired
+    UserCommentService userCommentService
 
     @GetMapping("/post/{postId}")
     ResponseEntity<ResponseData> findByPostId(@PathVariable String postId,
@@ -83,5 +87,12 @@ class CommentController extends BaseController {
     ResponseEntity remove(@PathVariable String commentId) {
         commentService.remove(commentId)
         return new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PutMapping("/user_status")
+    ResponseEntity<ResponseData> updateUserStatus(@RequestBody UserComment userComment) {
+        UserComment savedUserComment = userCommentService.save(userComment)
+        ResponseData data = new ResponseData(data: savedUserComment)
+        return new ResponseEntity<>(data, HttpStatus.OK)
     }
 }

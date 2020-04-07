@@ -23,6 +23,8 @@ class CommentService {
     UserService userService
     @Autowired
     PostService postService
+    @Autowired
+    UserCommentService userCommentService
 
     Comment findByCommentId(String commentId) {
         return commentRepository.findByCommentId(commentId)
@@ -85,8 +87,9 @@ class CommentService {
 
     private Comment addComment(Comment comment) {
         comment.commentId = new ObjectId().toString()
-        comment.createdAt = new Date().getTime()
-        comment.updatedAt = new Date().getTime()
+        long time = new Date().getTime()
+        comment.createdAt = time
+        comment.updatedAt = time
         postService.updateNumberComment(comment.postId, 1)
 
         return commentRepository.save(comment)
@@ -95,6 +98,7 @@ class CommentService {
     Comment remove(String commentId) {
         Comment comment = commentRepository.findByCommentId(commentId)
         postService.updateNumberComment(comment.postId, -1)
+        userCommentService.removeByCommentId(commentId)
         commentRepository.remove(commentId)
 
         return comment
@@ -130,4 +134,11 @@ class CommentService {
         }
     }
 
+    Long removeByPostId(String postId) {
+        return commentRepository.removeByPostId(postId)
+    }
+
+    void updateNumberLike(String commentId, Integer quantity) {
+        commentRepository.updateNumberLike(commentId, quantity)
+    }
 }

@@ -87,7 +87,7 @@ class PostController extends BaseController {
     }
 
     @PutMapping("/user_status")
-    ResponseEntity<ResponseData> updateLikeStatus(@RequestBody UserPost userPost) {
+    ResponseEntity<ResponseData> updateUserStatus(@RequestBody UserPost userPost) {
         UserPost savedUserPost = userPostService.save(userPost)
         ResponseData data = new ResponseData(data: savedUserPost)
         return new ResponseEntity<>(data, HttpStatus.OK)

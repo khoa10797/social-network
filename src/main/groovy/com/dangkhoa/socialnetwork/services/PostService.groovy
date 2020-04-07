@@ -24,6 +24,8 @@ class PostService {
     UserService userService
     @Autowired
     UserPostService userPostService
+    @Autowired
+    CommentService commentService
 
     Post findByPostId(String id) {
         return postRepository.findByPostId(id)
@@ -69,8 +71,9 @@ class PostService {
     Post save(Post post) {
         if (StringUtils.isBlank(post.postId)) {
             post.postId = new ObjectId().toString()
-            post.createdAt = new Date().getTime()
-            post.updatedAt = new Date().getTime()
+            long time = new Date().getTime()
+            post.createdAt = time
+            post.updatedAt = time
             return postRepository.save(post)
         }
         Post existPost = findByPostId(post.postId)
@@ -82,6 +85,8 @@ class PostService {
     }
 
     Long remove(String id) {
+        userPostService.removeByPostId(id)
+        commentService.removeByPostId(id)
         return postRepository.remove(id)
     }
 
