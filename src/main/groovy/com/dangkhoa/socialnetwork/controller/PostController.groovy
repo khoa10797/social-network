@@ -42,11 +42,11 @@ class PostController extends BaseController {
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
-    @GetMapping("/user/{userId}")
-    ResponseEntity<ResponseData> findByUserId(@PathVariable String userId,
+    @GetMapping("/user/{userOwnerId}")
+    ResponseEntity<ResponseData> findByUserOwnerId(@PathVariable String userOwnerId,
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer pageSize) {
-        List<PostResponse> postResponses = postService.getByUserId(userId, page)
+        List<PostResponse> postResponses = postService.getByUserOwnerId(userOwnerId, page)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 meta: buildMetaResponse(page, pageSize),
@@ -62,8 +62,8 @@ class PostController extends BaseController {
         Post insertedPost = postService.save(post)
 
         PostResponse postResponse = postMapperFacade.map(insertedPost, PostResponse.class)
-        UserResponse userResponse = userService.getByUserId(postResponse.userId)
-        postResponse.user = userResponse
+        UserResponse userOwner = userService.getByUserId(postResponse.userOwnerId)
+        postResponse.userOwner = userOwner
         ResponseData data = new ResponseData(data: postResponse)
 
         return new ResponseEntity(data, HttpStatus.CREATED)

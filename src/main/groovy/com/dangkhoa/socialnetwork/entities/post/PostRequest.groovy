@@ -2,7 +2,7 @@ package com.dangkhoa.socialnetwork.entities.post
 
 class PostRequest {
 
-    String userId
+    String userOwnerId
     String postType
     String title
     String content

@@ -8,7 +8,7 @@ class Post {
 
     String id
     String postId
-    String userId
+    String userOwnerId
     String postType
     String title
     String content

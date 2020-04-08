@@ -45,11 +45,11 @@ class CommentController extends BaseController {
         return new ResponseEntity<ResponseData>(data, HttpStatus.OK)
     }
 
-    @GetMapping("/user/{userId}")
-    ResponseEntity<ResponseData> findByUserId(@PathVariable String userId,
+    @GetMapping("/user/{userOwnerId}")
+    ResponseEntity<ResponseData> findByUserOwnerId(@PathVariable String userOwnerId,
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer pageSize) {
-        List<CommentResponse> commentResponses = commentService.getByUserId(userId, page)
+        List<CommentResponse> commentResponses = commentService.getByUserOwnerId(userOwnerId, page)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 meta: buildMetaResponse(page, pageSize),
@@ -65,8 +65,8 @@ class CommentController extends BaseController {
         Comment insertedComment = commentService.save(comment)
 
         CommentResponse commentResponse = commentMapperFacade.map(insertedComment, CommentResponse.class)
-        UserResponse userResponse = userService.getByUserId(commentResponse.userId)
-        commentResponse.user = userResponse
+        UserResponse userOwnerResponse = userService.getByUserId(commentResponse.userOwnerId)
+        commentResponse.userOwner = userOwnerResponse
         ResponseData data = new ResponseData(data: commentResponse)
 
         return new ResponseEntity(data, HttpStatus.CREATED)

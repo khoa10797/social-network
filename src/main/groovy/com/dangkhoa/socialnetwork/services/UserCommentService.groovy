@@ -31,6 +31,10 @@ class UserCommentService {
         return userCommentRepository.findByUserIdAndCommentIds(userId, commentIds)
     }
 
+    UserComment findByUserIdAndCommentId(String userId, String commentId) {
+        return userCommentRepository.findByUserIdAndCommentId(userId, commentId)
+    }
+
     Long removeByCommentId(String commentId) {
         return userCommentRepository.removeByCommentId(commentId)
     }

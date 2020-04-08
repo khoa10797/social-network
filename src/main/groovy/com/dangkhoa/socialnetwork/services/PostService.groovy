@@ -33,31 +33,33 @@ class PostService {
 
     PostResponse getByPostId(String postId) {
         Post post = findByPostId(postId)
-        UserResponse userResponse = userService.getByUserId(post.userId)
+        UserResponse userOwner = userService.getByUserId(post.userOwnerId)
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
+        UserPost userPost = userPostService.findByUserIdAndPostId(userOwner.userId, postId)
 
-        postResponse.user = userResponse
+        postResponse.userOwner = userOwner
+        postResponse.userStatus = userPost.userStatus
         return postResponse
     }
 
-    List<Post> findByUserId(String userId, Integer page, Integer limit) {
-        return postRepository.findByUserId(userId, page ?: 1, limit ?: Constant.DEFAULT_PAGE_SIZE)
+    List<Post> findByUserOwnerId(String userOwnerId, Integer page, Integer limit) {
+        return postRepository.findByUserOwnerId(userOwnerId, page ?: 1, limit ?: Constant.DEFAULT_PAGE_SIZE)
     }
 
-    List<Post> findByUserId(String userId, Integer page) {
-        return findByUserId(userId, page, Constant.DEFAULT_PAGE_SIZE)
+    List<Post> findByUserOwnerId(String userOwnerId, Integer page) {
+        return findByUserOwnerId(userOwnerId, page, Constant.DEFAULT_PAGE_SIZE)
     }
 
-    List<PostResponse> getByUserId(String userId, Integer page) {
-        List<Post> posts = findByUserId(userId, page)
-        UserResponse userResponse = userService.getByUserId(userId)
+    List<PostResponse> getByUserOwnerId(String userOwnerId, Integer page) {
+        List<Post> posts = findByUserOwnerId(userOwnerId, page)
+        UserResponse userOwner = userService.getByUserId(userOwnerId)
         List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
 
         List<String> postIds = postResponses.collect { postResponse -> postResponse.postId }
-        List<UserPost> userPosts = userPostService.findByUserIdAndPostIds(userId, postIds)
+        List<UserPost> userPosts = userPostService.findByUserIdAndPostIds(userOwnerId, postIds)
 
         postResponses.each { item ->
-            item.user = userResponse
+            item.userOwner = userOwner
             userPosts.each { userPost ->
                 if (userPost.postId == item.postId) {
                     item.userStatus = userPost.userStatus

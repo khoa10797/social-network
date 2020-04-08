@@ -30,6 +30,10 @@ class UserPostService {
         return userPostRepository.findByUserIdAndPostIds(userId, postIds)
     }
 
+    UserPost findByUserIdAndPostId(String userId, String postId) {
+        return userPostRepository.findByUserIdAndPostId(userId, postId)
+    }
+
     Long removeByPostId(String postId) {
         return userPostRepository.removeByPostId(postId)
     }

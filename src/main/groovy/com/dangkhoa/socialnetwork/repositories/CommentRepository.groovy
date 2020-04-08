@@ -30,11 +30,11 @@ class CommentRepository {
         return mongoTemplate.find(query, Comment.class)
     }
 
-    List<Comment> findByUserId(String postId, Integer page, Integer limit) {
+    List<Comment> findByUserOwnerId(String userOwnerId, Integer page, Integer limit) {
         Query query = new Query(
                 limit: limit,
                 skip: limit * (page - 1 < 0 ? 0 : page - 1)
-        ).addCriteria(Criteria.where("user_id").is(postId))
+        ).addCriteria(Criteria.where("user_owner_id").is(userOwnerId))
         return mongoTemplate.find(query, Comment.class)
     }
 

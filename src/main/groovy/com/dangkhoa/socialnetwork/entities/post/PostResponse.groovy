@@ -5,14 +5,14 @@ import com.dangkhoa.socialnetwork.entities.user.UserResponse
 class PostResponse {
 
     String postId
-    String userId
+    String userOwnerId
     String postType
     String title
     String content
     List<String> images
     Integer numberLike
     Integer numberDislike
-    UserResponse user
+    UserResponse userOwner
     Long numberComment
     String userStatus
     Long createdAt

@@ -58,7 +58,7 @@ public class MapperFacadeConfig {
 
         factory.classMap(Post.class, PostResponse.class)
                 .field("postId", "postId")
-                .field("userId", "userId")
+                .field("userOwnerId", "userOwnerId")
                 .field("title", "title")
                 .field("postType", "postType")
                 .field("content", "content")
@@ -71,7 +71,7 @@ public class MapperFacadeConfig {
                 .register();
 
         factory.classMap(PostRequest.class, Post.class)
-                .field("userId", "userId")
+                .field("userOwnerId", "userOwnerId")
                 .field("postType", "postType")
                 .field("title", "title")
                 .field("content", "content")
@@ -91,7 +91,7 @@ public class MapperFacadeConfig {
         factory.classMap(Comment.class, CommentResponse.class)
                 .field("commentId", "commentId")
                 .field("postId", "postId")
-                .field("userId", "userId")
+                .field("userOwnerId", "userOwnerId")
                 .field("parentId", "parentId")
                 .field("content", "content")
                 .field("numberLike", "numberLike")
@@ -102,7 +102,7 @@ public class MapperFacadeConfig {
 
         factory.classMap(CommentRequest.class, Comment.class)
                 .field("postId", "postId")
-                .field("userId", "userId")
+                .field("userOwnerId", "userOwnerId")
                 .field("parentId", "parentId")
                 .field("content", "content")
                 .field("numberLike", "numberLike")

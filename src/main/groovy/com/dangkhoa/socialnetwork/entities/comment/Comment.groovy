@@ -8,7 +8,7 @@ class Comment {
     String id
     String commentId
     String postId
-    String userId
+    String userOwnerId
     String parentId
     String content
     Integer numberLike

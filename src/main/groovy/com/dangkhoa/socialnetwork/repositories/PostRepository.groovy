@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
-import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -21,11 +20,11 @@ class PostRepository {
         return mongoTemplate.findOne(query, Post.class)
     }
 
-    List<Post> findByUserId(String userId, Integer page, Integer limit) {
+    List<Post> findByUserOwnerId(String userOwnerId, Integer page, Integer limit) {
         Query query = new Query(
                 limit: limit,
                 skip: limit * (page - 1 < 0 ? 0 : page - 1)
-        ).addCriteria(Criteria.where("user_id").is(userId))
+        ).addCriteria(Criteria.where("user_owner_id").is(userOwnerId))
         return mongoTemplate.find(query, Post.class)
     }
 

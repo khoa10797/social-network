@@ -16,7 +16,7 @@ class CommentServiceTest {
     void createComment() {
         def comment = new Comment(
                 postId: "5e5bca0efd1fd8770d812158",
-                userId: "5e5bc9c6958dba414452a851",
+                userOwnerId: "5e5bc9c6958dba414452a851",
                 parentId: "5e5bca7183e54b2e65d7e7c9",
                 content: "Comment test 4"
         )

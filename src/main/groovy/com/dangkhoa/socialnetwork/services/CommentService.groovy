@@ -4,6 +4,7 @@ import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.comment.Comment
 import com.dangkhoa.socialnetwork.entities.comment.CommentResponse
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.usercomment.UserComment
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import com.dangkhoa.socialnetwork.repositories.CommentRepository
 import ma.glasnost.orika.MapperFacade
@@ -32,9 +33,12 @@ class CommentService {
 
     CommentResponse getByCommentId(String commentId) {
         Comment comment = findByCommentId(commentId)
-        UserResponse userResponse = userService.getByUserId(comment.userId)
+        UserResponse userResponse = userService.getByUserId(comment.userOwnerId)
         CommentResponse commentResponse = commentMapperFacade.map(comment, CommentResponse.class)
-        commentResponse.user = userResponse
+        UserComment userComment = userCommentService.findByUserIdAndCommentId(userResponse.userId, commentId)
+
+        commentResponse.userOwner = userResponse
+        commentResponse.userStatus = userComment.userStatus
         return commentResponse
     }
 
@@ -49,7 +53,8 @@ class CommentService {
     List<CommentResponse> getByPostId(String postId, Integer page) {
         List<Comment> comments = findByPostId(postId, page)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
-        fillUserResponses(commentResponses)
+        fillUserOwner(commentResponses)
+        fillUserStatus(commentResponses)
         commentResponses.each { item ->
             item.childComments = getByCommentParentId(item.commentId)
         }
@@ -57,19 +62,19 @@ class CommentService {
         return commentResponses
     }
 
-    List<Comment> findByUserId(String userId, Integer page, Integer limit) {
-        return commentRepository.findByUserId(userId, page ?: 1, limit ?: Constant.DEFAULT_COMMENT_SIZE)
+    List<Comment> findByUserOwnerId(String userOwnerId, Integer page, Integer limit) {
+        return commentRepository.findByUserOwnerId(userOwnerId, page ?: 1, limit ?: Constant.DEFAULT_COMMENT_SIZE)
     }
 
-    List<Comment> findByUserId(String userId, Integer page) {
-        return findByUserId(userId, page, Constant.DEFAULT_COMMENT_SIZE)
+    List<Comment> findByUserOwnerId(String userOwnerId, Integer page) {
+        return findByUserOwnerId(userOwnerId, page, Constant.DEFAULT_COMMENT_SIZE)
     }
 
-    List<CommentResponse> getByUserId(String userId, Integer page) {
-        List<Comment> comments = findByUserId(userId, page)
-        UserResponse userResponse = userService.getByUserId(userId)
+    List<CommentResponse> getByUserOwnerId(String userOwnerId, Integer page) {
+        List<Comment> comments = findByUserOwnerId(userOwnerId, page)
+        UserResponse userOwner = userService.getByUserId(userOwnerId)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
-        commentResponses.each { it.user = userResponse }
+        commentResponses.each { it.userOwner = userOwner }
         return commentResponses
     }
 
@@ -122,15 +127,22 @@ class CommentService {
     List<CommentResponse> getByCommentParentId(String commentParentId) {
         List<Comment> comments = findByCommentParentId(commentParentId)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
-        fillUserResponses(commentResponses)
+        fillUserOwner(commentResponses)
         return commentResponses
     }
 
-    private void fillUserResponses(List<CommentResponse> commentResponses) {
-        Set<String> userIds = commentResponses.collect { it.userId }.toSet()
-        List<UserResponse> userResponses = userService.getByUserId(userIds.toList())
+    private void fillUserOwner(List<CommentResponse> commentResponses) {
+        Set<String> userOwnerIds = commentResponses.collect { it.userOwnerId }.toSet()
+        List<UserResponse> userOwners = userService.getByUserId(userOwnerIds.toList())
         commentResponses.each { commentResponse ->
-            commentResponse.user = userResponses.find { it.userId == commentResponse.userId }
+            commentResponse.userOwner = userOwners.find { it.userId == commentResponse.userOwnerId }
+        }
+    }
+
+    private void fillUserStatus(List<CommentResponse> commentResponses) {
+        List<String> commentIds = commentResponses.collect { it.commentId }
+        commentResponses.each { commentResponse ->
+
         }
     }
 
