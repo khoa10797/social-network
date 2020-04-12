@@ -1,5 +1,6 @@
 package com.dangkhoa.socialnetwork.services
 
+
 import com.dangkhoa.socialnetwork.entities.user.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
@@ -15,17 +16,21 @@ class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     UserService userService
+    @Autowired
+    RoleGroupService roleGroupService
 
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUserName(username)
-        List<GrantedAuthority> authorities = getUserAuthority(user.roleIds)
+        List<GrantedAuthority> authorities = getUserAuthority(user.roleGroupIds)
         return buildUserDetails(user, authorities)
     }
 
     List<GrantedAuthority> getUserAuthority(List<String> roleIds) {
         Set<GrantedAuthority> roles = new HashSet<>()
-        roleIds.each { item -> roles.add(new SimpleGrantedAuthority(item)) }
+        List<String> roleByIds = roleGroupService.getRoleByIds(roleIds)
+
+        roleByIds.each { item -> roles.add(new SimpleGrantedAuthority(item)) }
         return new ArrayList<>(roles)
     }
 

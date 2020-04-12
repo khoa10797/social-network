@@ -9,7 +9,7 @@ class User {
     String userId
     String userName
     String password
-    List<String> roleIds
+    List<String> roleGroupIds
     String email
     String name
     Integer age

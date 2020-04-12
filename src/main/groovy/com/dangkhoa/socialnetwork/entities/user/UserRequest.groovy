@@ -7,7 +7,7 @@ class UserRequest {
     Integer sex
     String userName
     String password
-    List<String> roleIds
+    List<String> roleGroupIds
     String email
     Boolean active
     String avatar

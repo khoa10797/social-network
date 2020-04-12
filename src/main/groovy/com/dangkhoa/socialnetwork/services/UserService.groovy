@@ -73,6 +73,7 @@ class UserService {
         oldUser.name = StringUtils.isBlank(newUser.name) ? oldUser.name : newUser.name
         oldUser.age = newUser.age == null ? oldUser.age : newUser.age
         oldUser.sex = newUser.sex == null ? oldUser.sex : newUser.sex
+        oldUser.roleGroupIds = newUser.roleGroupIds == null ? oldUser.roleGroupIds : newUser.roleGroupIds
         oldUser.password = StringUtils.isBlank(newUser.password) ? oldUser.password : bCryptPasswordEncoder.encode(newUser.password)
         oldUser.updatedAt = new Date().getTime()
     }

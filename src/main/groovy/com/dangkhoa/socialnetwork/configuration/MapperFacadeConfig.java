@@ -32,7 +32,6 @@ public class MapperFacadeConfig {
                 .field("sex", "sex")
                 .field("userName", "userName")
                 .field("email", "email")
-                .field("roleIds", "roleIds")
                 .field("avatar", "avatar")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
@@ -45,7 +44,7 @@ public class MapperFacadeConfig {
                 .field("userName", "userName")
                 .field("email", "email")
                 .field("password", "password")
-                .field("roleIds", "roleIds")
+                .field("roleGroupIds", "roleGroupIds")
                 .field("avatar", "avatar")
                 .register();
 

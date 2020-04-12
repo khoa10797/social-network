@@ -8,7 +8,6 @@ class UserResponse {
     Integer sex
     String userName
     String email
-    List<String> roleIds
     Boolean active
     String avatar
     Long createdAt
