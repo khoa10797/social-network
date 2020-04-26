@@ -14,7 +14,6 @@ class User {
     String name
     Integer age
     Integer sex
-    List<String> postIds
     Boolean active
     String avatar
     Long createdAt

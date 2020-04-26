@@ -2,10 +2,10 @@ package com.dangkhoa.socialnetwork.services
 
 
 import com.dangkhoa.socialnetwork.entities.user.User
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User as SpringUser
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -35,6 +35,6 @@ class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     UserDetails buildUserDetails(User user, List<GrantedAuthority> authorities) {
-        return new SpringUser(user.userName, user.password, user.active, true, true, true, authorities)
+        return new UserAccount(user, authorities)
     }
 }

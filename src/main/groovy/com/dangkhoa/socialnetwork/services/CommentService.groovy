@@ -1,8 +1,10 @@
 package com.dangkhoa.socialnetwork.services
 
+import com.dangkhoa.socialnetwork.base.SocialNetworkContext
 import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.comment.Comment
 import com.dangkhoa.socialnetwork.entities.comment.CommentResponse
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.usercomment.UserComment
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service
 @Service
 class CommentService {
 
+    @Autowired
+    SocialNetworkContext socialNetworkContext
     @Autowired
     MapperFacade commentMapperFacade
     @Autowired
@@ -35,10 +39,14 @@ class CommentService {
         Comment comment = findByCommentId(commentId)
         UserResponse userResponse = userService.getByUserId(comment.userOwnerId)
         CommentResponse commentResponse = commentMapperFacade.map(comment, CommentResponse.class)
-        UserComment userComment = userCommentService.findByUserIdAndCommentId(userResponse.userId, commentId)
+
+        UserAccount currentUser = socialNetworkContext.getCurrentUser()
+        if (currentUser != null) {
+            UserComment userComment = userCommentService.findByUserIdAndCommentId(currentUser.userId, commentId)
+            commentResponse.userStatus = userComment.userStatus
+        }
 
         commentResponse.userOwner = userResponse
-        commentResponse.userStatus = userComment.userStatus
         return commentResponse
     }
 
@@ -72,9 +80,9 @@ class CommentService {
 
     List<CommentResponse> getByUserOwnerId(String userOwnerId, Integer page) {
         List<Comment> comments = findByUserOwnerId(userOwnerId, page)
-        UserResponse userOwner = userService.getByUserId(userOwnerId)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
-        commentResponses.each { it.userOwner = userOwner }
+        fillUserOwner(commentResponses)
+        fillUserStatus(commentResponses)
         return commentResponses
     }
 
@@ -128,6 +136,7 @@ class CommentService {
         List<Comment> comments = findByCommentParentId(commentParentId)
         List<CommentResponse> commentResponses = commentMapperFacade.mapAsList(comments, CommentResponse.class)
         fillUserOwner(commentResponses)
+        fillUserStatus(commentResponses)
         return commentResponses
     }
 
@@ -141,8 +150,19 @@ class CommentService {
 
     private void fillUserStatus(List<CommentResponse> commentResponses) {
         List<String> commentIds = commentResponses.collect { it.commentId }
-        commentResponses.each { commentResponse ->
+        UserAccount currentUser = socialNetworkContext.getCurrentUser()
+        if (currentUser == null) {
+            return
+        }
 
+        List<UserComment> userComments = userCommentService.findByUserIdAndCommentIds(currentUser.userId, commentIds)
+
+        commentResponses.each { commentResponse ->
+            userComments.each { userComment ->
+                if (commentResponse.commentId == userComment.commentId) {
+                    commentResponse.userStatus = userComment.userStatus
+                }
+            }
         }
     }
 

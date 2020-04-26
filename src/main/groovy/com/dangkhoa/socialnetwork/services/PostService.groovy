@@ -1,8 +1,10 @@
 package com.dangkhoa.socialnetwork.services
 
+import com.dangkhoa.socialnetwork.base.SocialNetworkContext
 import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service
 @Service
 class PostService {
 
+    @Autowired
+    SocialNetworkContext socialNetworkContext
     @Autowired
     MapperFacade postMapperFacade
     @Autowired
@@ -35,10 +39,14 @@ class PostService {
         Post post = findByPostId(postId)
         UserResponse userOwner = userService.getByUserId(post.userOwnerId)
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
-        UserPost userPost = userPostService.findByUserIdAndPostId(userOwner.userId, postId)
+
+        UserAccount currentUser = socialNetworkContext.getCurrentUser()
+        if (currentUser != null) {
+            UserPost userPost = userPostService.findByUserIdAndPostId(currentUser.userId, postId)
+            postResponse.userStatus = userPost.userStatus
+        }
 
         postResponse.userOwner = userOwner
-        postResponse.userStatus = userPost.userStatus
         return postResponse
     }
 
@@ -52,22 +60,37 @@ class PostService {
 
     List<PostResponse> getByUserOwnerId(String userOwnerId, Integer page) {
         List<Post> posts = findByUserOwnerId(userOwnerId, page)
-        UserResponse userOwner = userService.getByUserId(userOwnerId)
         List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
+        fillUserOwner(postResponses)
+        fillUserStatus(postResponses)
 
-        List<String> postIds = postResponses.collect { postResponse -> postResponse.postId }
-        List<UserPost> userPosts = userPostService.findByUserIdAndPostIds(userOwnerId, postIds)
+        return postResponses
+    }
+
+    private void fillUserOwner(List<PostResponse> postResponses) {
+        List<String> userOwnerIds = postResponses.collect { postResponse -> postResponse.userOwnerId }
+        List<UserResponse> userResponses = userService.getByUserId(userOwnerIds)
 
         postResponses.each { item ->
-            item.userOwner = userOwner
+            item.userOwner = userResponses.find { it.userId == item.userOwnerId }
+        }
+    }
+
+    private void fillUserStatus(List<PostResponse> postResponses) {
+        List<String> postIds = postResponses.collect { it.postId }
+        UserAccount currentUser = socialNetworkContext.getCurrentUser()
+        if (currentUser == null) {
+            return
+        }
+
+        List<UserPost> userPosts = userPostService.findByUserIdAndPostIds(currentUser.userId, postIds)
+        postResponses.each { postResponse ->
             userPosts.each { userPost ->
-                if (userPost.postId == item.postId) {
-                    item.userStatus = userPost.userStatus
+                if (postResponse.postId == userPost.postId) {
+                    postResponse.userStatus = userPost.userStatus
                 }
             }
         }
-
-        return postResponses
     }
 
     Post save(Post post) {

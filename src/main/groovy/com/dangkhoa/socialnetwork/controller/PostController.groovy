@@ -2,9 +2,11 @@ package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
 import com.dangkhoa.socialnetwork.common.ResponseData
+import com.dangkhoa.socialnetwork.common.ResponseError
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.services.PostService
@@ -44,8 +46,8 @@ class PostController extends BaseController {
 
     @GetMapping("/user/{userOwnerId}")
     ResponseEntity<ResponseData> findByUserOwnerId(@PathVariable String userOwnerId,
-                                              @RequestParam(required = false) Integer page,
-                                              @RequestParam(required = false) Integer pageSize) {
+                                                   @RequestParam(required = false) Integer page,
+                                                   @RequestParam(required = false) Integer pageSize) {
         List<PostResponse> postResponses = postService.getByUserOwnerId(userOwnerId, page)
         ResponseData data = new ResponseData(
                 statusCode: 200,
@@ -73,6 +75,17 @@ class PostController extends BaseController {
     ResponseEntity<ResponseData> update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
         post.postId = id
+
+        UserAccount currentUser = getCurrentUser()
+        if (currentUser.userId != post.userOwnerId) {
+            return new ResponseEntity(
+                    new ResponseError(
+                            statusCode: 403,
+                            error: "Bạn không có quyền thực hiện chức năng này"
+                    )
+                    , HttpStatus.FORBIDDEN)
+        }
+
         Post updatedPost = postService.save(post)
         PostResponse postResponse = postMapperFacade.map(updatedPost, PostResponse.class)
         ResponseData data = new ResponseData(data: postResponse)
@@ -82,6 +95,18 @@ class PostController extends BaseController {
 
     @DeleteMapping("/{id}")
     ResponseEntity remove(@PathVariable String id) {
+        UserAccount currentUser = getCurrentUser()
+        Post post = postService.findByPostId(id)
+
+        if (post.userOwnerId != currentUser.userId) {
+            return new ResponseEntity(
+                    new ResponseError(
+                            statusCode: 403,
+                            error: "Bạn không có quyền thực hiện chức năng này"
+                    )
+                    , HttpStatus.FORBIDDEN)
+        }
+
         postService.remove(id)
         return new ResponseEntity(HttpStatus.NO_CONTENT)
     }

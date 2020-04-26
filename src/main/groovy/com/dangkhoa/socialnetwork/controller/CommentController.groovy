@@ -2,9 +2,11 @@ package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
 import com.dangkhoa.socialnetwork.common.ResponseData
+import com.dangkhoa.socialnetwork.common.ResponseError
 import com.dangkhoa.socialnetwork.entities.comment.Comment
 import com.dangkhoa.socialnetwork.entities.comment.CommentRequest
 import com.dangkhoa.socialnetwork.entities.comment.CommentResponse
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.usercomment.UserComment
 import com.dangkhoa.socialnetwork.services.CommentService
@@ -76,6 +78,17 @@ class CommentController extends BaseController {
     ResponseEntity<ResponseData> update(@PathVariable String commentId, @RequestBody @Valid CommentRequest commentRequest) {
         Comment comment = commentMapperFacade.map(commentRequest, Comment.class)
         comment.commentId = commentId
+
+        UserAccount currentUser = getCurrentUser()
+        if (currentUser.userId != comment.userOwnerId) {
+            return new ResponseEntity(
+                    new ResponseError(
+                            statusCode: 403,
+                            error: "Bạn không có quyền thực hiện chức năng này"
+                    )
+                    , HttpStatus.FORBIDDEN)
+        }
+
         Comment updatedComment = commentService.save(comment)
         CommentResponse commentResponse = commentMapperFacade.map(updatedComment, CommentResponse.class)
         ResponseData data = new ResponseData(data: commentResponse)
@@ -85,6 +98,17 @@ class CommentController extends BaseController {
 
     @DeleteMapping("/{commentId}")
     ResponseEntity remove(@PathVariable String commentId) {
+        Comment comment = commentService.findByCommentId(commentId)
+        UserAccount currentUser = getCurrentUser()
+        if (currentUser.userId != comment.userOwnerId) {
+            return new ResponseEntity(
+                    new ResponseError(
+                            statusCode: 403,
+                            error: "Bạn không có quyền thực hiện chức năng này"
+                    )
+                    , HttpStatus.FORBIDDEN)
+        }
+
         commentService.remove(commentId)
         return new ResponseEntity(HttpStatus.NO_CONTENT)
     }
