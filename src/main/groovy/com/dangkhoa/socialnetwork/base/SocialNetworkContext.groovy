@@ -10,7 +10,10 @@ class SocialNetworkContext {
 
     UserAccount getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
-        return (UserAccount) authentication.getPrincipal()
+        if (authentication.getPrincipal() instanceof UserAccount) {
+            return (UserAccount) authentication.getPrincipal()
+        }
+        return null;
     }
 
 }

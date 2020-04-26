@@ -5,6 +5,7 @@ import com.dangkhoa.socialnetwork.common.ResponseData
 import com.dangkhoa.socialnetwork.entities.user.User
 import com.dangkhoa.socialnetwork.entities.user.UserRequest
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
+import com.dangkhoa.socialnetwork.services.JwtService
 import com.dangkhoa.socialnetwork.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +23,8 @@ class UserController extends BaseController {
     MapperFacade userMapperFacade
     @Autowired
     UserService userService
+    @Autowired
+    JwtService jwtService
 
     @GetMapping
     ResponseEntity<ResponseData> findUsers(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
@@ -66,5 +69,14 @@ class UserController extends BaseController {
     ResponseEntity remove(@PathVariable String id) {
         userService.remove(id)
         return new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PostMapping("/login")
+    ResponseEntity login(@RequestBody UserRequest userRequest) {
+        if (userService.checkLogin(userRequest.userName, userRequest.password)) {
+            String token = jwtService.generateToken(userRequest.userName)
+            return new ResponseEntity([access_token: token], HttpStatus.OK)
+        }
+        return new ResponseEntity("Thông tin tài khoản hoặc mật khẩu không chính xác", HttpStatus.BAD_REQUEST)
     }
 }

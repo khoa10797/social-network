@@ -22,6 +22,14 @@ class UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder
 
+    Boolean checkLogin(String userName, String password) {
+        User user = findByUserName(userName)
+        if (user == null)
+            return false
+
+        return bCryptPasswordEncoder.matches(password, user.password)
+    }
+
     List<User> findUsers(Integer page, Integer limit) {
         return userRepository.findUsers(limit ?: Constant.DEFAULT_PAGE_SIZE, page ?: 1)
     }

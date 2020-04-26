@@ -31,6 +31,7 @@ dependencies {
 
     compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.15'
 
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

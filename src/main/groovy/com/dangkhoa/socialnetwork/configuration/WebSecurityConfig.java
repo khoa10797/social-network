@@ -1,6 +1,9 @@
 package com.dangkhoa.socialnetwork.configuration;
 
 
+import com.dangkhoa.socialnetwork.base.jwt.CustomAccessDeniedHandler;
+import com.dangkhoa.socialnetwork.base.jwt.CustomAuthenticationEntryPoint;
+import com.dangkhoa.socialnetwork.base.jwt.JwtAuthenticationTokenFilter;
 import com.dangkhoa.socialnetwork.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,9 +31,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() throws Exception {
+        JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter = new JwtAuthenticationTokenFilter();
+        jwtAuthenticationTokenFilter.setAuthenticationManager(super.authenticationManager());
+        return jwtAuthenticationTokenFilter;
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
+
+        http.authorizeRequests().antMatchers("/user/login").permitAll();
 
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/post/**").permitAll()
                 .antMatchers("/post/**").hasRole("POST");
@@ -37,7 +60,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/comment/**").permitAll()
                 .antMatchers("/comment/**").hasRole("COMMENT");
 
-        http.httpBasic();
+        http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.httpBasic()
+                .authenticationEntryPoint(customAuthenticationEntryPoint())
+                .and()
+                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 
     @Override

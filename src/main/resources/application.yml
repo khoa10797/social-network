@@ -4,3 +4,6 @@ spring:
   data:
     mongodb:
       field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+  jwt:
+    secret-key: 'secret_key_nay_dai_vua_du_256bit'
+    expired-time: 86400000 #ms
