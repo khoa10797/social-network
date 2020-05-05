@@ -77,6 +77,6 @@ class UserController extends BaseController {
             String token = jwtService.generateToken(userRequest.userName)
             return new ResponseEntity([access_token: token], HttpStatus.OK)
         }
-        return new ResponseEntity("Thông tin tài khoản hoặc mật khẩu không chính xác", HttpStatus.BAD_REQUEST)
+        return new ResponseEntity([error: "Thông tin tài khoản hoặc mật khẩu không chính xác"], HttpStatus.BAD_REQUEST)
     }
 }
