@@ -1,7 +1,7 @@
 package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
-import com.dangkhoa.socialnetwork.common.ResponseData
+import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.entities.topic.Topic
 import com.dangkhoa.socialnetwork.entities.topic.TopicRequest
 import com.dangkhoa.socialnetwork.entities.topic.TopicResponse

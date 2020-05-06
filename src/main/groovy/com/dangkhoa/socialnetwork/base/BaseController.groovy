@@ -1,8 +1,8 @@
 package com.dangkhoa.socialnetwork.base
 
 import com.dangkhoa.socialnetwork.common.Constant
-import com.dangkhoa.socialnetwork.common.ResponseData
-import com.dangkhoa.socialnetwork.common.ResponseError
+import com.dangkhoa.socialnetwork.base.response.ResponseData
+import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import org.springframework.http.HttpStatus
@@ -25,7 +25,10 @@ class BaseController {
 
     UserAccount getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
-        return (UserAccount) authentication.getPrincipal()
+        if (authentication.getPrincipal() instanceof UserAccount) {
+            return (UserAccount) authentication.getPrincipal()
+        }
+        return null;
     }
 
     @ExceptionHandler(InValidObjectException.class)

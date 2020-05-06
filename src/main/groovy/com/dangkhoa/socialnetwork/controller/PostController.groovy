@@ -1,8 +1,8 @@
 package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
-import com.dangkhoa.socialnetwork.common.ResponseData
-import com.dangkhoa.socialnetwork.common.ResponseError
+import com.dangkhoa.socialnetwork.base.response.ResponseData
+import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.post.PostResponse

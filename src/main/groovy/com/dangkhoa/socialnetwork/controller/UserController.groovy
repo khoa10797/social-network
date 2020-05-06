@@ -1,8 +1,11 @@
 package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
-import com.dangkhoa.socialnetwork.common.ResponseData
+import com.dangkhoa.socialnetwork.base.response.BaseResponse
+import com.dangkhoa.socialnetwork.base.response.ResponseData
+import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.user.User
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserRequest
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.services.JwtService
@@ -72,11 +75,24 @@ class UserController extends BaseController {
     }
 
     @PostMapping("/login")
-    ResponseEntity login(@RequestBody UserRequest userRequest) {
+    ResponseEntity<BaseResponse> login(@RequestBody UserRequest userRequest) {
         if (userService.checkLogin(userRequest.userName, userRequest.password)) {
             String token = jwtService.generateToken(userRequest.userName)
-            return new ResponseEntity([access_token: token], HttpStatus.OK)
+            User user = userService.findByUserName(userRequest.userName)
+            UserResponse userResponse = userMapperFacade.map(user, UserResponse.class)
+            ResponseData data = new ResponseData(
+                    statusCode: 200,
+                    data: [
+                            access_token: token,
+                            user        : userResponse
+                    ]
+            )
+            return new ResponseEntity(data, HttpStatus.OK)
         }
-        return new ResponseEntity([error: "Thông tin tài khoản hoặc mật khẩu không chính xác"], HttpStatus.BAD_REQUEST)
+        ResponseError error = new ResponseError(
+                statusCode: 400,
+                error: "Thông tin tài khoản hoặc mật khẩu không chính xác"
+        )
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST)
     }
 }

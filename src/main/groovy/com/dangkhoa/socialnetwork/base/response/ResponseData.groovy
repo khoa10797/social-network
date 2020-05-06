@@ -1,8 +1,7 @@
-package com.dangkhoa.socialnetwork.common
+package com.dangkhoa.socialnetwork.base.response
 
-class ResponseData {
+class ResponseData extends BaseResponse{
 
-    Integer statusCode
     Meta meta
     Object data
 

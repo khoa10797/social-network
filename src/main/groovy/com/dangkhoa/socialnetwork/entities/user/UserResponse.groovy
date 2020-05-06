@@ -10,6 +10,7 @@ class UserResponse {
     String email
     Boolean active
     String avatar
+    List<String> roleGroupIds
     Long createdAt
     Long updatedAt
 

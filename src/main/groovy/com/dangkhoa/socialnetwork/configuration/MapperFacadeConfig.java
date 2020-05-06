@@ -33,6 +33,7 @@ public class MapperFacadeConfig {
                 .field("userName", "userName")
                 .field("email", "email")
                 .field("avatar", "avatar")
+                .field("roleGroupIds", "roleGroupIds")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
