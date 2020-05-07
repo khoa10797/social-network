@@ -1,15 +1,18 @@
 package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
+import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.trendingpost.TrendingPost
 import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
 import com.dangkhoa.socialnetwork.services.PostService
+import com.dangkhoa.socialnetwork.services.TrendingPostService
 import com.dangkhoa.socialnetwork.services.UserPostService
 import com.dangkhoa.socialnetwork.services.UserService
 import ma.glasnost.orika.MapperFacade
@@ -32,9 +35,23 @@ class PostController extends BaseController {
     UserService userService
     @Autowired
     UserPostService userPostService
+    @Autowired
+    TrendingPostService trendingPostService
+
+    @GetMapping("/trending")
+    ResponseEntity<BaseResponse> getTrendingPost() {
+        TrendingPost trendingPost = trendingPostService.getLast()
+        List<PostResponse> postResponses = postService.getByPostIds(trendingPost.postIds)
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: postResponses
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
 
     @GetMapping("/{id}")
-    ResponseEntity<ResponseData> findById(@PathVariable String id) {
+    ResponseEntity<BaseResponse> findById(@PathVariable String id) {
         PostResponse postResponse = postService.getByPostId(id)
         ResponseData data = new ResponseData(
                 statusCode: 200,
@@ -45,7 +62,7 @@ class PostController extends BaseController {
     }
 
     @GetMapping("/user/{userOwnerId}")
-    ResponseEntity<ResponseData> findByUserOwnerId(@PathVariable String userOwnerId,
+    ResponseEntity<BaseResponse> findByUserOwnerId(@PathVariable String userOwnerId,
                                                    @RequestParam(required = false) Integer page,
                                                    @RequestParam(required = false) Integer pageSize) {
         List<PostResponse> postResponses = postService.getByUserOwnerId(userOwnerId, page)
@@ -59,7 +76,7 @@ class PostController extends BaseController {
     }
 
     @PostMapping
-    ResponseEntity<ResponseData> add(@RequestBody @Valid PostRequest postRequest) {
+    ResponseEntity<BaseResponse> add(@RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
         Post insertedPost = postService.save(post)
 
@@ -72,7 +89,7 @@ class PostController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<ResponseData> update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest) {
+    ResponseEntity<BaseResponse> update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
         post.postId = id
 
@@ -112,7 +129,7 @@ class PostController extends BaseController {
     }
 
     @PutMapping("/user_status")
-    ResponseEntity<ResponseData> updateUserStatus(@RequestBody UserPost userPost) {
+    ResponseEntity<BaseResponse> updateUserStatus(@RequestBody UserPost userPost) {
         UserPost savedUserPost = userPostService.save(userPost)
         ResponseData data = new ResponseData(data: savedUserPost)
         return new ResponseEntity<>(data, HttpStatus.OK)

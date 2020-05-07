@@ -139,4 +139,21 @@ class PostService {
         }
         postRepository.updateNumberLike(postId, quantity)
     }
+
+    List<Post> findTopByNumberLike(Integer limit, boolean desc) {
+        return postRepository.findTopByNumberLike(limit, desc);
+    }
+
+    List<Post> findByPostIds(List<String> postIds) {
+        return postRepository.findByPostIds(postIds)
+    }
+
+    List<PostResponse> getByPostIds(List<String> postIds) {
+        List<Post> posts = findByPostIds(postIds)
+        List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
+        fillUserOwner(postResponses)
+        fillUserStatus(postResponses)
+
+        return postResponses
+    }
 }

@@ -4,6 +4,7 @@ import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.post.Post
 import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -53,5 +54,24 @@ class PostRepository {
         ]
 
         mongoTemplate.getCollection(Constant.POSTS).updateOne(filter, update)
+    }
+
+    List<Post> findTopByNumberLike(Integer limit, boolean desc) {
+        Query query = new Query(
+                limit: limit
+        )
+
+        Sort.Direction direction = Sort.Direction.DESC
+        if (!desc) {
+            direction = Sort.Direction.ASC
+        }
+        query.with(Sort.by(direction, "number_like"))
+
+        return mongoTemplate.find(query, Post.class)
+    }
+
+    List<Post> findByPostIds(List<String> postIds) {
+        Query query = new Query(Criteria.where("post_id").in(postIds))
+        return mongoTemplate.find(query, Post.class)
     }
 }
