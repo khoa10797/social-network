@@ -70,4 +70,14 @@ class CommentRepository {
 
         mongoTemplate.getCollection(Constant.COMMENTS).updateOne(filter, update)
     }
+
+    List<Comment> findByParentId(String parentId) {
+        Query query = new Query(Criteria.where("parent_id").is(parentId))
+        return mongoTemplate.find(query, Comment.class)
+    }
+
+    Long removeByParentId(String parentId) {
+        Query query = new Query(Criteria.where("parent_id").is(parentId))
+        return mongoTemplate.remove(query, Comment.class).deletedCount
+    }
 }

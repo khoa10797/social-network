@@ -10,9 +10,12 @@ import com.dangkhoa.socialnetwork.entities.usercomment.UserComment
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import com.dangkhoa.socialnetwork.repositories.CommentRepository
 import ma.glasnost.orika.MapperFacade
+import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 
 @Service
@@ -110,7 +113,14 @@ class CommentService {
 
     Comment remove(String commentId) {
         Comment comment = commentRepository.findByCommentId(commentId)
-        postService.updateNumberComment(comment.postId, -1)
+        List<Comment> childComments = findByParentId(commentId)
+        Integer numberDeletedComment = 0;
+        if (CollectionUtils.isNotEmpty(childComments)) {
+            numberDeletedComment += childComments.size();
+            removeByParentId(commentId)
+        }
+
+        postService.updateNumberComment(comment.postId, -(numberDeletedComment + 1))
         userCommentService.removeByCommentId(commentId)
         commentRepository.remove(commentId)
 
@@ -172,5 +182,13 @@ class CommentService {
 
     void updateNumberLike(String commentId, Integer quantity) {
         commentRepository.updateNumberLike(commentId, quantity)
+    }
+
+    List<Comment> findByParentId(String parentId) {
+        return commentRepository.findByParentId(parentId)
+    }
+
+    Long removeByParentId(String parentId) {
+        return commentRepository.removeByParentId(parentId)
     }
 }

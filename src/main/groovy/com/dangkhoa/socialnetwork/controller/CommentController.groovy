@@ -49,8 +49,8 @@ class CommentController extends BaseController {
 
     @GetMapping("/user/{userOwnerId}")
     ResponseEntity<ResponseData> findByUserOwnerId(@PathVariable String userOwnerId,
-                                              @RequestParam(required = false) Integer page,
-                                              @RequestParam(required = false) Integer pageSize) {
+                                                   @RequestParam(required = false) Integer page,
+                                                   @RequestParam(required = false) Integer pageSize) {
         List<CommentResponse> commentResponses = commentService.getByUserOwnerId(userOwnerId, page)
         ResponseData data = new ResponseData(
                 statusCode: 200,
@@ -109,8 +109,10 @@ class CommentController extends BaseController {
                     , HttpStatus.FORBIDDEN)
         }
 
-        commentService.remove(commentId)
-        return new ResponseEntity(HttpStatus.NO_CONTENT)
+        Comment removedComment = commentService.remove(commentId)
+        CommentResponse commentResponse = commentMapperFacade.map(removedComment, CommentResponse.class)
+        ResponseData data = new ResponseData(data: commentResponse)
+        return new ResponseEntity(data, HttpStatus.OK)
     }
 
     @PutMapping("/user_status")
