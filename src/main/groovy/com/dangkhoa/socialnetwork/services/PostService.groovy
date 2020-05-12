@@ -99,6 +99,8 @@ class PostService {
             long time = new Date().getTime()
             post.createdAt = time
             post.updatedAt = time
+            post.numberComment = 0
+            post.numberComment = 0
             return postRepository.save(post)
         }
         Post existPost = findByPostId(post.postId)
