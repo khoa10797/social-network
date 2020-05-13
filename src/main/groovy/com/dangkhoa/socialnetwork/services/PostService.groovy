@@ -43,7 +43,9 @@ class PostService {
         UserAccount currentUser = socialNetworkContext.getCurrentUser()
         if (currentUser != null) {
             UserPost userPost = userPostService.findByUserIdAndPostId(currentUser.userId, postId)
-            postResponse.userStatus = userPost.userStatus
+            if (userPost != null) {
+                postResponse.userStatus = userPost.userStatus
+            }
         }
 
         postResponse.userOwner = userOwner
@@ -100,7 +102,7 @@ class PostService {
             post.createdAt = time
             post.updatedAt = time
             post.numberComment = 0
-            post.numberComment = 0
+            post.numberLike = 0
             return postRepository.save(post)
         }
         Post existPost = findByPostId(post.postId)
