@@ -181,6 +181,12 @@ class CommentService {
     }
 
     void updateNumberLike(String commentId, Integer quantity) {
+        Comment comment = findByCommentId(commentId)
+
+        if (comment.numberLike <= 0 && quantity < 0) {
+            return
+        }
+
         commentRepository.updateNumberLike(commentId, quantity)
     }
 
