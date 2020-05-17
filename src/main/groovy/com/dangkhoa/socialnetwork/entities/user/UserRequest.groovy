@@ -11,5 +11,7 @@ class UserRequest {
     String email
     Boolean active
     String avatar
+    String intro
+    String description
 
 }

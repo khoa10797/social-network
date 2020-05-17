@@ -11,6 +11,8 @@ class UserResponse {
     Boolean active
     String avatar
     List<String> roleGroupIds
+    String intro
+    String description
     Long createdAt
     Long updatedAt
 

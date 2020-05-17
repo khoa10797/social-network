@@ -34,6 +34,8 @@ public class MapperFacadeConfig {
                 .field("email", "email")
                 .field("avatar", "avatar")
                 .field("roleGroupIds", "roleGroupIds")
+                .field("intro", "intro")
+                .field("description", "description")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
@@ -47,6 +49,8 @@ public class MapperFacadeConfig {
                 .field("password", "password")
                 .field("roleGroupIds", "roleGroupIds")
                 .field("avatar", "avatar")
+                .field("intro", "intro")
+                .field("description", "description")
                 .register();
 
         return factory.getMapperFacade();

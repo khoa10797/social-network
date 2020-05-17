@@ -16,6 +16,8 @@ class User {
     Integer sex
     Boolean active
     String avatar
+    String intro
+    String description
     Long createdAt
     Long updatedAt
 
