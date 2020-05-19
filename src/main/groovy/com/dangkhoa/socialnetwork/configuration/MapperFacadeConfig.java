@@ -123,14 +123,22 @@ public class MapperFacadeConfig {
         factory.classMap(Topic.class, TopicResponse.class)
                 .field("topicId", "topicId")
                 .field("name", "name")
+                .field("numberPost", "numberPost")
                 .field("numberFollow", "numberFollow")
+                .field("intro", "intro")
+                .field("description", "description")
+                .field("backgroundImage", "backgroundImage")
+                .field("avatar", "avatar")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
 
         factory.classMap(TopicRequest.class, Topic.class)
                 .field("name", "name")
-                .field("numberFollow", "numberFollow")
+                .field("intro", "intro")
+                .field("description", "description")
+                .field("backgroundImage", "backgroundImage")
+                .field("avatar", "avatar")
                 .register();
 
         return factory.getMapperFacade();
