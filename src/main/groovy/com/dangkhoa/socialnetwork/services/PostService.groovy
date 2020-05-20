@@ -30,6 +30,8 @@ class PostService {
     UserPostService userPostService
     @Autowired
     CommentService commentService
+    @Autowired
+    TopicService topicService
 
     Post findByPostId(String id) {
         return postRepository.findByPostId(id)
@@ -97,13 +99,7 @@ class PostService {
 
     Post save(Post post) {
         if (StringUtils.isBlank(post.postId)) {
-            post.postId = new ObjectId().toString()
-            long time = new Date().getTime()
-            post.createdAt = time
-            post.updatedAt = time
-            post.numberComment = 0
-            post.numberLike = 0
-            return postRepository.save(post)
+            return addPost(post)
         }
         Post existPost = findByPostId(post.postId)
         if (existPost == null)
@@ -113,7 +109,26 @@ class PostService {
         return postRepository.save(existPost)
     }
 
+    private Post addPost(Post post) {
+        post.postId = new ObjectId().toString()
+        long time = new Date().getTime()
+        post.createdAt = time
+        post.updatedAt = time
+        post.numberComment = 0
+        post.numberLike = 0
+        if (StringUtils.isNotBlank(post.topicId)) {
+            topicService.updateNumberPost(post.topicId, 1)
+        }
+
+        return postRepository.save(post)
+    }
+
     Long remove(String id) {
+        Post post = findByPostId(id)
+        if (StringUtils.isNotBlank()) {
+            topicService.updateNumberPost(post.topicId, -1)
+        }
+
         userPostService.removeByPostId(id)
         commentService.removeByPostId(id)
         return postRepository.remove(id)

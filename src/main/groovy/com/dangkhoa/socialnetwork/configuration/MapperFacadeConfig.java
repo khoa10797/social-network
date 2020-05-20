@@ -63,6 +63,7 @@ public class MapperFacadeConfig {
         factory.classMap(Post.class, PostResponse.class)
                 .field("postId", "postId")
                 .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
                 .field("title", "title")
                 .field("postType", "postType")
                 .field("content", "content")
@@ -76,6 +77,7 @@ public class MapperFacadeConfig {
 
         factory.classMap(PostRequest.class, Post.class)
                 .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
                 .field("postType", "postType")
                 .field("title", "title")
                 .field("content", "content")

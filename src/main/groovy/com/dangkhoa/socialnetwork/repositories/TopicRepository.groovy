@@ -1,6 +1,8 @@
 package com.dangkhoa.socialnetwork.repositories
 
+import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.topic.Topic
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -33,5 +35,14 @@ class TopicRepository {
     Long remove(String topicId){
         Query query = new Query(Criteria.where("topic_id").is(topicId))
         return mongoTemplate.remove(query, Topic.class).deletedCount
+    }
+
+    void updateNumberPost(String topicId, Integer quantity) {
+        Document filter = [topic_id: topicId]
+        Document update = [
+                $inc: [number_post: quantity]
+        ]
+
+        mongoTemplate.getCollection(Constant.TOPICS).updateOne(filter, update)
     }
 }

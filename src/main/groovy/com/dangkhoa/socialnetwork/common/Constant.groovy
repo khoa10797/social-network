@@ -11,6 +11,7 @@ class Constant {
     static final String QUESTION = "question"
     static final String POSTS = "posts"
     static final String COMMENTS = "comments"
+    static final String TOPICS = "topics"
     static final USER_POST = "user_post"
     static final USER_COMMENT = "user_comment"
 

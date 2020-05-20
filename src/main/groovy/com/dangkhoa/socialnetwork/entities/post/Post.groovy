@@ -9,6 +9,7 @@ class Post {
     String id
     String postId
     String userOwnerId
+    String topicId
     String postType
     String title
     String content

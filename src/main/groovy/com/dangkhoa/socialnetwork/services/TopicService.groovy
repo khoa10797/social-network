@@ -52,4 +52,13 @@ class TopicService {
         oldTopic.numberFollow = newTopic.numberFollow == null ? oldTopic.numberFollow : newTopic.numberFollow
         oldTopic.updatedAt = new Date().getTime()
     }
+
+    void updateNumberPost(String topicId, Integer quantity) {
+        Topic topic = findByTopicId(topicId)
+        if (topic.numberPost <= 0 && quantity < 0) {
+            return
+        }
+
+        topicRepository.updateNumberPost(topicId, quantity)
+    }
 }
