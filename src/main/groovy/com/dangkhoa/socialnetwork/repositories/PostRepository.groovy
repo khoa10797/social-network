@@ -74,4 +74,12 @@ class PostRepository {
         Query query = new Query(Criteria.where("post_id").in(postIds))
         return mongoTemplate.find(query, Post.class)
     }
+
+    List<Post> findByTopicId(String topicId, Integer page, Integer limit) {
+        Query query = new Query(
+                limit: limit,
+                skip: limit * (page - 1 < 0 ? 0 : page - 1)
+        ).addCriteria(Criteria.where("topic_id").is(topicId))
+        return mongoTemplate.find(query, Post.class)
+    }
 }

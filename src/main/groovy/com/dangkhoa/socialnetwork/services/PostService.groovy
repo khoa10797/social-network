@@ -175,4 +175,17 @@ class PostService {
 
         return postResponses
     }
+
+    List<Post> findByTopicId(String topicId, Integer page, Integer limit) {
+        return postRepository.findByTopicId(topicId, page ?: 1, limit ?: Constant.DEFAULT_PAGE_SIZE)
+    }
+
+    List<PostResponse> getByTopicId(String topicId, Integer page, Integer limit) {
+        List<Post> posts = findByTopicId(topicId, page, limit)
+        List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
+        fillUserOwner(postResponses)
+        fillUserStatus(postResponses)
+
+        return postResponses
+    }
 }

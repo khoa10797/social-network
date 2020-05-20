@@ -134,4 +134,18 @@ class PostController extends BaseController {
         ResponseData data = new ResponseData(data: savedUserPost)
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
+
+    @GetMapping("/topic/{topicId}")
+    ResponseEntity<BaseResponse> getByTopicId(@PathVariable String topicId,
+                                              @RequestParam(required = false) Integer page,
+                                              @RequestParam(required = false) Integer pageSize) {
+        List<PostResponse> postResponses = postService.getByTopicId(topicId, page, pageSize)
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                meta: buildMetaResponse(page, pageSize),
+                data: postResponses
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
 }
