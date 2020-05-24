@@ -10,16 +10,35 @@ class UserTopicService {
 
     @Autowired
     UserTopicRepository userTopicRepository
+    @Autowired
+    TopicService topicService
 
-    List<String> getTopicIdByUserId(String userId){
+    List<String> getTopicIdByUserId(String userId) {
         return userTopicRepository.getTopicIdByUserId(userId)
     }
 
-    Long countByTopicId(String topicId){
+    Long countByTopicId(String topicId) {
         return userTopicRepository.countByTopicId(topicId)
     }
 
-    UserTopic save(UserTopic userTopic){
-        return userTopicRepository.save(userTopic)
+    UserTopic save(UserTopic userTopic) {
+        UserTopic existUserTopic = userTopicRepository.findByUserIdAndTopicId(userTopic.userId, userTopic.topicId)
+
+        Integer updatedNumberFollow = UserTopic.UserStatus.FOLLOW == userTopic.userStatus ? 1 : -1
+        if (existUserTopic != null && existUserTopic.userStatus == userTopic.userStatus) {
+            updatedNumberFollow = 0
+        }
+        topicService.updateNumberFollow(userTopic.topicId, updatedNumberFollow)
+
+        if (existUserTopic == null) {
+            return userTopicRepository.save(userTopic)
+        }
+
+        existUserTopic.userStatus = userTopic.userStatus
+        return userTopicRepository.save(existUserTopic)
+    }
+
+    UserTopic findByUserIdAndTopicId(String userId, String topicId) {
+        return userTopicRepository.findByUserIdAndTopicId(userId, topicId)
     }
 }

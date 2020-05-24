@@ -28,11 +28,11 @@ class TopicRepository {
         return mongoTemplate.find(query, Topic.class)
     }
 
-    Topic save(Topic topic){
+    Topic save(Topic topic) {
         return mongoTemplate.save(topic)
     }
 
-    Long remove(String topicId){
+    Long remove(String topicId) {
         Query query = new Query(Criteria.where("topic_id").is(topicId))
         return mongoTemplate.remove(query, Topic.class).deletedCount
     }
@@ -41,6 +41,15 @@ class TopicRepository {
         Document filter = [topic_id: topicId]
         Document update = [
                 $inc: [number_post: quantity]
+        ]
+
+        mongoTemplate.getCollection(Constant.TOPICS).updateOne(filter, update)
+    }
+
+    void updateNumberFollow(String topicId, Integer quantity) {
+        Document filter = [topic_id: topicId]
+        Document update = [
+                $inc: [number_follow: quantity]
         ]
 
         mongoTemplate.getCollection(Constant.TOPICS).updateOne(filter, update)

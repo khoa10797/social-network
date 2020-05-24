@@ -1,9 +1,14 @@
 package com.dangkhoa.socialnetwork.services
 
+import com.dangkhoa.socialnetwork.base.SocialNetworkContext
 import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.topic.Topic
+import com.dangkhoa.socialnetwork.entities.topic.TopicResponse
+import com.dangkhoa.socialnetwork.entities.user.UserAccount
+import com.dangkhoa.socialnetwork.entities.usertopic.UserTopic
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import com.dangkhoa.socialnetwork.repositories.TopicRepository
+import ma.glasnost.orika.MapperFacade
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +18,13 @@ import org.springframework.stereotype.Service
 class TopicService {
 
     @Autowired
+    SocialNetworkContext socialNetworkContext
+    @Autowired
     TopicRepository topicRepository
+    @Autowired
+    UserTopicService userTopicService
+    @Autowired
+    MapperFacade topicMapperFacade
 
     Topic findByTopicId(String topicId) {
         return topicRepository.findByTopicId(topicId)
@@ -29,6 +40,14 @@ class TopicService {
 
     Long remove(String topicId) {
         return topicRepository.remove(topicId)
+    }
+
+    TopicResponse getByTopicId(String topicId) {
+        Topic topic = findByTopicId(topicId)
+        TopicResponse topicResponse = topicMapperFacade.map(topic, TopicResponse.class)
+        fillUserStatus(topicResponse)
+
+        return topicResponse
     }
 
     Topic save(Topic topic) {
@@ -60,5 +79,25 @@ class TopicService {
         }
 
         topicRepository.updateNumberPost(topicId, quantity)
+    }
+
+    void updateNumberFollow(String topicId, Integer quantity) {
+        Topic topic = topicRepository.findByTopicId(topicId)
+        if (topic.numberFollow <= 0 && quantity < 0) {
+            return
+        }
+        topicRepository.updateNumberFollow(topicId, quantity)
+    }
+
+    private void fillUserStatus(TopicResponse topicResponse) {
+        UserAccount currentUser = socialNetworkContext.getCurrentUser()
+        if (currentUser == null) {
+            return
+        }
+
+        UserTopic userTopic = userTopicService.findByUserIdAndTopicId(currentUser.userId, topicResponse.topicId)
+        if (userTopic != null) {
+            topicResponse.userStatus = userTopic.userStatus
+        }
     }
 }

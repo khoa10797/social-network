@@ -25,14 +25,19 @@ class UserTopicRepository {
         return result
     }
 
-    Long countByTopicId(String topicId){
+    Long countByTopicId(String topicId) {
         Query query = new Query().addCriteria(Criteria.where("topic_id").is(topicId))
         return mongoTemplate.count(query, UserTopic.class)
     }
 
-    UserTopic save(UserTopic userTopic){
+    UserTopic save(UserTopic userTopic) {
         return mongoTemplate.save(userTopic)
     }
 
-
+    UserTopic findByUserIdAndTopicId(String userId, String topicId) {
+        Query query = new Query()
+                .addCriteria(Criteria.where("user_id").is(userId))
+                .addCriteria(Criteria.where("topic_id").is(topicId))
+        return mongoTemplate.findOne(query, UserTopic.class)
+    }
 }

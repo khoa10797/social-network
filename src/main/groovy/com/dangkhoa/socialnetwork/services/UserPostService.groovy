@@ -17,11 +17,15 @@ class UserPostService {
         UserPost existUserPost = userPostRepository.findByUserIdAndPostId(userPost.userId, userPost.postId)
 
         Integer updatedNumberLike = UserPost.UserStatus.LIKE == userPost.userStatus ? 1 : -1
-        postService.updateNumberLike(userPost.postId, updatedNumberLike)
-
         if (existUserPost == null) {
             return userPostRepository.save(userPost)
         }
+
+        if (existUserPost != null && existUserPost.userStatus == userPost.userStatus) {
+            updatedNumberLike = 0
+        }
+        postService.updateNumberLike(userPost.postId, updatedNumberLike)
+
         existUserPost.userStatus = userPost.userStatus
         return userPostRepository.save(existUserPost)
     }

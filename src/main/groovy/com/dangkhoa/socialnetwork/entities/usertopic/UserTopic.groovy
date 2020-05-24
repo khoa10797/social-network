@@ -8,12 +8,12 @@ class UserTopic {
     String id
     String userId
     String topicId
-    Integer followStatus
+    String userStatus
     Long createdAt
     Long updatedAt
 
-    static class FollowStatus{
-        static final Integer FOLLOW = 1
-        static final Integer UNFOLLOW = -1
+    static class UserStatus {
+        static final String FOLLOW = "follow"
+        static final String UNFOLLOW = "unfollow"
     }
 }

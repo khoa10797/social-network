@@ -1,11 +1,15 @@
 package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
+import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.entities.topic.Topic
 import com.dangkhoa.socialnetwork.entities.topic.TopicRequest
 import com.dangkhoa.socialnetwork.entities.topic.TopicResponse
+import com.dangkhoa.socialnetwork.entities.userpost.UserPost
+import com.dangkhoa.socialnetwork.entities.usertopic.UserTopic
 import com.dangkhoa.socialnetwork.services.TopicService
+import com.dangkhoa.socialnetwork.services.UserTopicService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,6 +26,8 @@ class TopicController extends BaseController {
     MapperFacade topicMapperFacade
     @Autowired
     TopicService topicService
+    @Autowired
+    UserTopicService userTopicService
 
     @GetMapping
     ResponseEntity<ResponseData> findTopics(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
@@ -38,8 +44,7 @@ class TopicController extends BaseController {
 
     @GetMapping("/{topicId}")
     ResponseEntity<ResponseData> findByTopicId(@PathVariable String topicId) {
-        Topic topic = topicService.findByTopicId(topicId)
-        TopicResponse topicResponse = topicMapperFacade.map(topic, TopicResponse.class)
+        TopicResponse topicResponse = topicService.getByTopicId(topicId)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: topicResponse
@@ -67,5 +72,17 @@ class TopicController extends BaseController {
     ResponseEntity remove(@PathVariable String topicId) {
         topicService.remove(topicId)
         return new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PutMapping("/user_status")
+    ResponseEntity<BaseResponse> updateUserStatus(@RequestBody UserTopic userTopic) {
+        UserTopic savedUserTopic = userTopicService.save(userTopic)
+        ResponseData data = new ResponseData(data: savedUserTopic)
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
+    @GetMapping("user")
+    ResponseEntity<BaseResponse> getFollowUser() {
+        return new ResponseEntity<BaseResponse>(null, HttpStatus.OK)
     }
 }
