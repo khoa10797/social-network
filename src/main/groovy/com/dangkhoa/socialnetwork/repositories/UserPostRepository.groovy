@@ -1,7 +1,8 @@
 package com.dangkhoa.socialnetwork.repositories
 
-
+import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -35,5 +36,15 @@ class UserPostRepository {
     Long removeByPostId(String postId) {
         Query query = new Query(Criteria.where("post_id").is(postId))
         return mongoTemplate.remove(query, UserPost.class).deletedCount
+    }
+
+    List<String> findUserIdByPostId(String postId) {
+        List<String> result = new ArrayList<>()
+        mongoTemplate.getCollection(Constant.USER_POST).find()
+                .filter([post_id: postId] as Document)
+                .projection([user_id: 1] as Document)
+                .iterator()
+                .forEachRemaining { item -> result.add(item?.user_id as String) }
+        return result
     }
 }

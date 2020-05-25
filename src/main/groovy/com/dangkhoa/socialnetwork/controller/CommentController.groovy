@@ -9,6 +9,7 @@ import com.dangkhoa.socialnetwork.entities.comment.CommentResponse
 import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.usercomment.UserComment
+import com.dangkhoa.socialnetwork.event.publisher.CommentEventPublisher
 import com.dangkhoa.socialnetwork.services.CommentService
 import com.dangkhoa.socialnetwork.services.UserCommentService
 import com.dangkhoa.socialnetwork.services.UserService
@@ -32,6 +33,8 @@ class CommentController extends BaseController {
     UserService userService
     @Autowired
     UserCommentService userCommentService
+    @Autowired
+    CommentEventPublisher commentEventPublisher
 
     @GetMapping("/post/{postId}")
     ResponseEntity<ResponseData> findByPostId(@PathVariable String postId,
@@ -70,6 +73,7 @@ class CommentController extends BaseController {
         UserResponse userOwnerResponse = userService.getByUserIds(commentResponse.userOwnerId)
         commentResponse.userOwner = userOwnerResponse
         ResponseData data = new ResponseData(data: commentResponse)
+        commentEventPublisher.addComment(insertedComment)
 
         return new ResponseEntity(data, HttpStatus.CREATED)
     }

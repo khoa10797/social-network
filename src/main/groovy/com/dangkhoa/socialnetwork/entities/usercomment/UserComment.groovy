@@ -8,6 +8,7 @@ class UserComment {
     String id
     String userId
     String commentId
+    String postId
     String userStatus
 
     static class UserStatus {
