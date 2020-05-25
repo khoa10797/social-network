@@ -41,4 +41,8 @@ class UserTopicService {
     UserTopic findByUserIdAndTopicId(String userId, String topicId) {
         return userTopicRepository.findByUserIdAndTopicId(userId, topicId)
     }
+
+    List<String> getUserIdByTopicId(String topicId) {
+        return userTopicRepository.getUserIdByTopicId(topicId)
+    }
 }

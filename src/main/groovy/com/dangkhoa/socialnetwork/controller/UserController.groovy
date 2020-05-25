@@ -5,7 +5,6 @@ import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.user.User
-import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserRequest
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.services.JwtService
@@ -44,7 +43,7 @@ class UserController extends BaseController {
 
     @GetMapping("/{userId}")
     ResponseEntity<ResponseData> findByUserId(@PathVariable String userId) {
-        UserResponse userResponse = userService.getByUserId(userId)
+        UserResponse userResponse = userService.getByUserIds(userId)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: userResponse

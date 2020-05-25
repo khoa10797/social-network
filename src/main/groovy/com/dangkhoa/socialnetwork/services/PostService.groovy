@@ -39,7 +39,7 @@ class PostService {
 
     PostResponse getByPostId(String postId) {
         Post post = findByPostId(postId)
-        UserResponse userOwner = userService.getByUserId(post.userOwnerId)
+        UserResponse userOwner = userService.getByUserIds(post.userOwnerId)
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
 
         UserAccount currentUser = socialNetworkContext.getCurrentUser()
@@ -73,7 +73,7 @@ class PostService {
 
     private void fillUserOwner(List<PostResponse> postResponses) {
         List<String> userOwnerIds = postResponses.collect { postResponse -> postResponse.userOwnerId }
-        List<UserResponse> userResponses = userService.getByUserId(userOwnerIds)
+        List<UserResponse> userResponses = userService.getByUserIds(userOwnerIds)
 
         postResponses.each { item ->
             item.userOwner = userResponses.find { it.userId == item.userOwnerId }

@@ -42,7 +42,7 @@ class UserService {
         return userRepository.findByUserId(userId)
     }
 
-    UserResponse getByUserId(String userId) {
+    UserResponse getByUserIds(String userId) {
         User user = findByUserId(userId)
         return userMapperFacade.map(user, UserResponse.class)
     }
@@ -90,7 +90,7 @@ class UserService {
         return userRepository.findByUserId(userIds)
     }
 
-    List<UserResponse> getByUserId(List<String> userIds) {
+    List<UserResponse> getByUserIds(List<String> userIds) {
         List<User> users = findByUserId(userIds)
         return userMapperFacade.mapAsList(users, UserResponse.class)
     }

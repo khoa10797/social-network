@@ -81,7 +81,7 @@ class PostController extends BaseController {
         Post insertedPost = postService.save(post)
 
         PostResponse postResponse = postMapperFacade.map(insertedPost, PostResponse.class)
-        UserResponse userOwner = userService.getByUserId(postResponse.userOwnerId)
+        UserResponse userOwner = userService.getByUserIds(postResponse.userOwnerId)
         postResponse.userOwner = userOwner
         ResponseData data = new ResponseData(data: postResponse)
 

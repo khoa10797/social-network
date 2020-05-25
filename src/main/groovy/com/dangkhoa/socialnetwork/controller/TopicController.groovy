@@ -6,9 +6,10 @@ import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.entities.topic.Topic
 import com.dangkhoa.socialnetwork.entities.topic.TopicRequest
 import com.dangkhoa.socialnetwork.entities.topic.TopicResponse
-import com.dangkhoa.socialnetwork.entities.userpost.UserPost
+import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.usertopic.UserTopic
 import com.dangkhoa.socialnetwork.services.TopicService
+import com.dangkhoa.socialnetwork.services.UserService
 import com.dangkhoa.socialnetwork.services.UserTopicService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,6 +29,8 @@ class TopicController extends BaseController {
     TopicService topicService
     @Autowired
     UserTopicService userTopicService
+    @Autowired
+    UserService userService
 
     @GetMapping
     ResponseEntity<ResponseData> findTopics(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
@@ -81,8 +84,14 @@ class TopicController extends BaseController {
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
-    @GetMapping("user")
-    ResponseEntity<BaseResponse> getFollowUser() {
-        return new ResponseEntity<BaseResponse>(null, HttpStatus.OK)
+    @GetMapping("/{topicId}/follower")
+    ResponseEntity<BaseResponse> getFollowUser(@PathVariable String topicId) {
+        List<String> userIds = userTopicService.getUserIdByTopicId(topicId)
+        List<UserResponse> userFollows = userService.getByUserIds(userIds)
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: userFollows
+        )
+        return new ResponseEntity<BaseResponse>(data, HttpStatus.OK)
     }
 }

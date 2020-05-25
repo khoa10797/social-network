@@ -14,8 +14,6 @@ import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.query.Criteria
-import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 
 @Service
@@ -40,7 +38,7 @@ class CommentService {
 
     CommentResponse getByCommentId(String commentId) {
         Comment comment = findByCommentId(commentId)
-        UserResponse userResponse = userService.getByUserId(comment.userOwnerId)
+        UserResponse userResponse = userService.getByUserIds(comment.userOwnerId)
         CommentResponse commentResponse = commentMapperFacade.map(comment, CommentResponse.class)
 
         UserAccount currentUser = socialNetworkContext.getCurrentUser()
@@ -152,7 +150,7 @@ class CommentService {
 
     private void fillUserOwner(List<CommentResponse> commentResponses) {
         Set<String> userOwnerIds = commentResponses.collect { it.userOwnerId }.toSet()
-        List<UserResponse> userOwners = userService.getByUserId(userOwnerIds.toList())
+        List<UserResponse> userOwners = userService.getByUserIds(userOwnerIds.toList())
         commentResponses.each { commentResponse ->
             commentResponse.userOwner = userOwners.find { it.userId == commentResponse.userOwnerId }
         }

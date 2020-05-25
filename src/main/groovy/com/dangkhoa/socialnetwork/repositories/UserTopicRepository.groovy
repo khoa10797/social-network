@@ -40,4 +40,14 @@ class UserTopicRepository {
                 .addCriteria(Criteria.where("topic_id").is(topicId))
         return mongoTemplate.findOne(query, UserTopic.class)
     }
+
+    List<String> getUserIdByTopicId(String topicId) {
+        List<String> result = new ArrayList<>()
+        mongoTemplate.getCollection(Constant.USER_TOPIC).find()
+                .filter([topic_id: topicId] as Document)
+                .projection([user_id: 1] as Document)
+                .iterator()
+                .forEachRemaining { item -> result.add(item?.user_id as String) }
+        return result
+    }
 }
