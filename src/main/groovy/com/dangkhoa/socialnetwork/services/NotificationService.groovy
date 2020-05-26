@@ -18,4 +18,8 @@ class NotificationService {
     List<Notification> findByUserId(String userId) {
         return notificationRepository.findByUserId(userId)
     }
+
+    Long countNotSeenByUserId(String userId) {
+        return notificationRepository.countNotSeenByUserId(userId)
+    }
 }

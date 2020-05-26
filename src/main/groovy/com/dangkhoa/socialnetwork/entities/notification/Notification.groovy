@@ -4,9 +4,15 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document("notifications")
 class Notification {
-    String userId
+    String receiverId
     String postId
     String message
-    Boolean isViewed
+    String type
+    Boolean isSeen
     Long createdAt
+
+    static class Type {
+        public static String ADD_COMMENT = "ADD_COMMENT"
+        public static String ADD_CHILD_COMMENT = "ADD_CHILD_COMMENT"
+    }
 }

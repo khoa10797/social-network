@@ -40,10 +40,11 @@ class CommentEventListener {
         userResponses.each { user ->
             if (ownerPost.userId != ownerComment.userId) {
                 Notification notification = new Notification(
-                        userId: user.userId,
+                        receiverId: user.userId,
                         postId: event.postId,
+                        type: Notification.Type.ADD_COMMENT,
                         message: "${ownerComment.name} đã bình luận về bài viết của ${ownerPost.name}",
-                        isViewed: false,
+                        isSeen: false,
                         createdAt: new Date().getTime()
                 )
                 notificationService.save(notification)
