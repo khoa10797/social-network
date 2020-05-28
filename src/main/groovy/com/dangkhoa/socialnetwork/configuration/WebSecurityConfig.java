@@ -60,6 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/comment/**").permitAll()
                 .antMatchers("/comment/**").hasRole("COMMENT");
 
+        http.authorizeRequests().antMatchers("/notification").authenticated();
+
         http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.httpBasic()

@@ -1,14 +1,17 @@
 package com.dangkhoa.socialnetwork.entities.notification
 
+import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document("notifications")
 class Notification {
-    String receiverId
+    String subscriberId
+    String publisherId
     String postId
     String message
     String type
     Boolean isSeen
+    UserResponse publisher
     Long createdAt
 
     static class Type {

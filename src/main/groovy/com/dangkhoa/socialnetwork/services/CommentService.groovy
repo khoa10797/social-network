@@ -38,7 +38,7 @@ class CommentService {
 
     CommentResponse getByCommentId(String commentId) {
         Comment comment = findByCommentId(commentId)
-        UserResponse userResponse = userService.getByUserIds(comment.userOwnerId)
+        UserResponse userResponse = userService.getByUserId(comment.userOwnerId)
         CommentResponse commentResponse = commentMapperFacade.map(comment, CommentResponse.class)
 
         UserAccount currentUser = socialNetworkContext.getCurrentUser()

@@ -39,7 +39,7 @@ class PostService {
 
     PostResponse getByPostId(String postId) {
         Post post = findByPostId(postId)
-        UserResponse userOwner = userService.getByUserIds(post.userOwnerId)
+        UserResponse userOwner = userService.getByUserId(post.userOwnerId)
         PostResponse postResponse = postMapperFacade.map(post, PostResponse.class)
 
         UserAccount currentUser = socialNetworkContext.getCurrentUser()

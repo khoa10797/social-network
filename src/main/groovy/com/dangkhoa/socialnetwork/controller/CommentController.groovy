@@ -70,7 +70,7 @@ class CommentController extends BaseController {
         Comment insertedComment = commentService.save(comment)
 
         CommentResponse commentResponse = commentMapperFacade.map(insertedComment, CommentResponse.class)
-        UserResponse userOwnerResponse = userService.getByUserIds(commentResponse.userOwnerId)
+        UserResponse userOwnerResponse = userService.getByUserId(commentResponse.userOwnerId)
         commentResponse.userOwner = userOwnerResponse
         ResponseData data = new ResponseData(data: commentResponse)
         commentEventPublisher.addComment(insertedComment)

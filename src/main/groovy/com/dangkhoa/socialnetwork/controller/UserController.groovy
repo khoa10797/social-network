@@ -43,7 +43,7 @@ class UserController extends BaseController {
 
     @GetMapping("/{userId}")
     ResponseEntity<ResponseData> findByUserId(@PathVariable String userId) {
-        UserResponse userResponse = userService.getByUserIds(userId)
+        UserResponse userResponse = userService.getByUserId(userId)
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: userResponse
