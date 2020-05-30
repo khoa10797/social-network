@@ -17,5 +17,6 @@ class Notification {
     static class Type {
         public static String ADD_COMMENT = "ADD_COMMENT"
         public static String ADD_CHILD_COMMENT = "ADD_CHILD_COMMENT"
+        public static String LIKE_POST = "LIKE_POST"
     }
 }

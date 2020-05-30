@@ -11,6 +11,7 @@ import com.dangkhoa.socialnetwork.entities.trendingpost.TrendingPost
 import com.dangkhoa.socialnetwork.entities.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.userpost.UserPost
+import com.dangkhoa.socialnetwork.event.publisher.PostEventPublisher
 import com.dangkhoa.socialnetwork.services.PostService
 import com.dangkhoa.socialnetwork.services.TrendingPostService
 import com.dangkhoa.socialnetwork.services.UserPostService
@@ -37,6 +38,8 @@ class PostController extends BaseController {
     UserPostService userPostService
     @Autowired
     TrendingPostService trendingPostService
+    @Autowired
+    PostEventPublisher postEventPublisher
 
     @GetMapping("/trending")
     ResponseEntity<BaseResponse> getTrendingPost() {
@@ -132,6 +135,8 @@ class PostController extends BaseController {
     ResponseEntity<BaseResponse> updateUserStatus(@RequestBody UserPost userPost) {
         UserPost savedUserPost = userPostService.save(userPost)
         ResponseData data = new ResponseData(data: savedUserPost)
+        postEventPublisher.likePost(userPost.userId, userPost.postId)
+
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 

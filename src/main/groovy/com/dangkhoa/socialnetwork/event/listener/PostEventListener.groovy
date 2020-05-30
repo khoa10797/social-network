@@ -3,22 +3,23 @@ package com.dangkhoa.socialnetwork.event.listener
 import com.dangkhoa.socialnetwork.entities.notification.Notification
 import com.dangkhoa.socialnetwork.entities.post.Post
 import com.dangkhoa.socialnetwork.entities.user.UserResponse
-import com.dangkhoa.socialnetwork.event.event.CommentEvent
-import com.dangkhoa.socialnetwork.services.*
+import com.dangkhoa.socialnetwork.event.event.PostEvent
+import com.dangkhoa.socialnetwork.services.NotificationService
+import com.dangkhoa.socialnetwork.services.PostService
+import com.dangkhoa.socialnetwork.services.UserPostService
+import com.dangkhoa.socialnetwork.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
 @Component
-class CommentEventListener {
+class PostEventListener {
 
     @Autowired
-    UserPostService userPostService
-    @Autowired
-    UserCommentService userCommentService
-    @Autowired
     UserService userService
+    @Autowired
+    UserPostService userPostService
     @Autowired
     PostService postService
     @Autowired
@@ -26,7 +27,7 @@ class CommentEventListener {
 
     @Async
     @EventListener
-    void notification(CommentEvent event) {
+    void notification(PostEvent event) {
         Post post = postService.findByPostId(event.postId)
         UserResponse ownerPost = userService.getByUserId(post.userOwnerId)
         UserResponse publisher = userService.getByUserId(event.publisherId)
@@ -56,8 +57,8 @@ class CommentEventListener {
 
     String getNotificationType(String type) {
         switch (type) {
-            case CommentEvent.Type.ADD:
-                return Notification.Type.ADD_COMMENT
+            case PostEvent.Type.LIKE:
+                return Notification.Type.LIKE_POST
         }
         return ""
     }
