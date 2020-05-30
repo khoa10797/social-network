@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -35,6 +36,13 @@ class NotificationController extends BaseController {
             page = 1
         List<Notification> notifications = notificationService.findByUserId(userId, page)
         ResponseData data = new ResponseData(data: notifications)
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
+    @PutMapping("/seen/{subscriberId}")
+    ResponseEntity<BaseResponse> updateSeenStatusBySubscriberId(@PathVariable String subscriberId) {
+        long updatedNotification = notificationService.updateSeenStatusBySubscriberId(subscriberId)
+        ResponseData data = new ResponseData(data: [updated: updatedNotification])
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 }

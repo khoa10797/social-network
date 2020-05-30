@@ -31,7 +31,11 @@ class NotificationService {
         return notificationRepository.findByPostIdAndSubscriberIds(postId, subscriberIds)
     }
 
-    List<Notification> findByPostIdAndPublisherId(String postId, String publisherId) {
-        return notificationRepository.findByPostIdAndPublisherId(postId, publisherId)
+    List<Notification> findNotification(String postId, String publisherId, String type) {
+        return notificationRepository.findByNotification(postId, publisherId, type)
+    }
+
+    Long updateSeenStatusBySubscriberId(String subscriberId) {
+        return notificationRepository.updateSeenStatusBySubscriberId(subscriberId)
     }
 }

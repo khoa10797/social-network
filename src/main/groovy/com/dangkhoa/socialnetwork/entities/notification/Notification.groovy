@@ -5,13 +5,13 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document("notifications")
 class Notification {
+    String id
     String subscriberId
-    String publisherId
     String postId
-    String message
     String type
     Boolean isSeen
     UserResponse publisher
+    UserResponse ownerPost
     Long createdAt
 
     static class Type {

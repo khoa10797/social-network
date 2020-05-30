@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -50,10 +51,19 @@ class NotificationRepository {
         return mongoTemplate.find(query, Notification.class)
     }
 
-    List<Notification> findByPostIdAndPublisherId(String postId, String publisherId) {
+    List<Notification> findByNotification(String postId, String publisherId, String type) {
         Query query = new Query()
-        Criteria criteria = Criteria.where("post_id").is(postId).and("publisher_id").is(publisherId)
+        Criteria criteria = Criteria.where("post_id").is(postId)
+                .and("publisher_id").is(publisherId)
+                .and("type").is(type)
         query.addCriteria(criteria)
         return mongoTemplate.find(query, Notification.class)
+    }
+
+    Long updateSeenStatusBySubscriberId(String subscriberId) {
+        Query query = new Query().addCriteria(Criteria.where("subscriber_id").is(subscriberId))
+        Update update = new Update()
+        update.set("is_seen", true)
+        return mongoTemplate.updateMulti(query, update, Notification.class).modifiedCount
     }
 }
