@@ -17,7 +17,6 @@ class PostServiceTest {
     void createPost() {
         def post = new Post(
                 userOwnerId: "5e355d3d916bc36dd7dc4306",
-                postType: Constant.BLOG,
                 content: "Ma bư đang đọc thần chú",
                 images: [
                         "Mabu.jpg"

@@ -136,7 +136,6 @@ class PostService {
 
     static void setUpdateValue(Post oldPost, Post newPost) {
         oldPost.content = StringUtils.isBlank(newPost.content) ? oldPost.content : newPost.content
-        oldPost.postType = StringUtils.isBlank(newPost.postType) ? oldPost.postType : newPost.postType
         oldPost.numberComment = newPost.numberComment == null ? oldPost.numberComment : newPost.numberComment
         oldPost.numberLike = newPost.numberLike == null ? oldPost.numberLike : newPost.numberLike
         oldPost.numberDislike = newPost.numberDislike == null ? oldPost.numberDislike : newPost.numberDislike

@@ -9,7 +9,6 @@ class Post {
     String postId
     String userOwnerId
     String topicId
-    String postType
     String title
     String content
     List<String> images
