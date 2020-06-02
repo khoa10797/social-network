@@ -1,6 +1,6 @@
 package com.dangkhoa.socialnetwork.base
 
-import com.dangkhoa.socialnetwork.entities.user.UserAccount
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component

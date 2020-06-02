@@ -1,7 +1,7 @@
 package com.dangkhoa.socialnetwork
 
-import com.dangkhoa.socialnetwork.entities.topic.Topic
-import com.dangkhoa.socialnetwork.services.TopicService
+import com.dangkhoa.socialnetwork.entities.mongo.topic.Topic
+import com.dangkhoa.socialnetwork.mongo.services.TopicService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

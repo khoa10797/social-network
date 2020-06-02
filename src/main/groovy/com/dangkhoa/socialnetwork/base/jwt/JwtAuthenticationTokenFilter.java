@@ -1,7 +1,7 @@
 package com.dangkhoa.socialnetwork.base.jwt;
 
-import com.dangkhoa.socialnetwork.services.JwtService;
-import com.dangkhoa.socialnetwork.services.UserDetailsServiceImpl;
+import com.dangkhoa.socialnetwork.mongo.services.JwtService;
+import com.dangkhoa.socialnetwork.mongo.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -4,18 +4,19 @@ import com.dangkhoa.socialnetwork.base.BaseController
 import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
-import com.dangkhoa.socialnetwork.entities.post.Post
-import com.dangkhoa.socialnetwork.entities.post.PostRequest
-import com.dangkhoa.socialnetwork.entities.post.PostResponse
-import com.dangkhoa.socialnetwork.entities.trendingpost.TrendingPost
-import com.dangkhoa.socialnetwork.entities.user.UserAccount
-import com.dangkhoa.socialnetwork.entities.user.UserResponse
-import com.dangkhoa.socialnetwork.entities.userpost.UserPost
+import com.dangkhoa.socialnetwork.elasticsearch.services.EsPostService
+import com.dangkhoa.socialnetwork.entities.mongo.post.Post
+import com.dangkhoa.socialnetwork.entities.mongo.post.PostRequest
+import com.dangkhoa.socialnetwork.entities.mongo.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.mongo.trendingpost.TrendingPost
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.mongo.userpost.UserPost
 import com.dangkhoa.socialnetwork.event.publisher.PostEventPublisher
-import com.dangkhoa.socialnetwork.services.PostService
-import com.dangkhoa.socialnetwork.services.TrendingPostService
-import com.dangkhoa.socialnetwork.services.UserPostService
-import com.dangkhoa.socialnetwork.services.UserService
+import com.dangkhoa.socialnetwork.mongo.services.PostService
+import com.dangkhoa.socialnetwork.mongo.services.TrendingPostService
+import com.dangkhoa.socialnetwork.mongo.services.UserPostService
+import com.dangkhoa.socialnetwork.mongo.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -32,6 +33,8 @@ class PostController extends BaseController {
     MapperFacade postMapperFacade
     @Autowired
     PostService postService
+    @Autowired
+    EsPostService esPostService
     @Autowired
     UserService userService
     @Autowired

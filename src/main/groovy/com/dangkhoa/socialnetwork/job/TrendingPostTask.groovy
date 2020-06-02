@@ -1,9 +1,9 @@
 package com.dangkhoa.socialnetwork.job
 
-import com.dangkhoa.socialnetwork.entities.post.Post
-import com.dangkhoa.socialnetwork.entities.trendingpost.TrendingPost
-import com.dangkhoa.socialnetwork.services.PostService
-import com.dangkhoa.socialnetwork.services.TrendingPostService
+import com.dangkhoa.socialnetwork.entities.mongo.post.Post
+import com.dangkhoa.socialnetwork.entities.mongo.trendingpost.TrendingPost
+import com.dangkhoa.socialnetwork.mongo.services.PostService
+import com.dangkhoa.socialnetwork.mongo.services.TrendingPostService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component

@@ -4,11 +4,11 @@ import com.dangkhoa.socialnetwork.base.BaseController
 import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
-import com.dangkhoa.socialnetwork.entities.user.User
-import com.dangkhoa.socialnetwork.entities.user.UserRequest
-import com.dangkhoa.socialnetwork.entities.user.UserResponse
-import com.dangkhoa.socialnetwork.services.JwtService
-import com.dangkhoa.socialnetwork.services.UserService
+import com.dangkhoa.socialnetwork.entities.mongo.user.User
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserRequest
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
+import com.dangkhoa.socialnetwork.mongo.services.JwtService
+import com.dangkhoa.socialnetwork.mongo.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

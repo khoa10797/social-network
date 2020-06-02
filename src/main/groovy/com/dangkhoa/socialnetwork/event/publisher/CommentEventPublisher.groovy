@@ -1,6 +1,6 @@
 package com.dangkhoa.socialnetwork.event.publisher
 
-import com.dangkhoa.socialnetwork.entities.comment.Comment
+import com.dangkhoa.socialnetwork.entities.mongo.comment.Comment
 import com.dangkhoa.socialnetwork.event.event.CommentEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEventPublisher

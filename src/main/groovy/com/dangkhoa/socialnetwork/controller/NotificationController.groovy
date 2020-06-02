@@ -3,8 +3,8 @@ package com.dangkhoa.socialnetwork.controller
 import com.dangkhoa.socialnetwork.base.BaseController
 import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
-import com.dangkhoa.socialnetwork.entities.notification.Notification
-import com.dangkhoa.socialnetwork.services.NotificationService
+import com.dangkhoa.socialnetwork.entities.mongo.notification.Notification
+import com.dangkhoa.socialnetwork.mongo.services.NotificationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -1,8 +1,7 @@
 package com.dangkhoa.socialnetwork
 
-import com.dangkhoa.socialnetwork.entities.user.User
-import com.dangkhoa.socialnetwork.entities.user.UserResponse
-import com.dangkhoa.socialnetwork.services.UserService
+import com.dangkhoa.socialnetwork.entities.mongo.user.User
+import com.dangkhoa.socialnetwork.mongo.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

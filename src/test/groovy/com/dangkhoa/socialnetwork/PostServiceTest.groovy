@@ -1,8 +1,8 @@
 package com.dangkhoa.socialnetwork
 
-import com.dangkhoa.socialnetwork.common.Constant
-import com.dangkhoa.socialnetwork.entities.post.Post
-import com.dangkhoa.socialnetwork.services.PostService
+
+import com.dangkhoa.socialnetwork.entities.mongo.post.Post
+import com.dangkhoa.socialnetwork.mongo.services.PostService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

@@ -1,7 +1,7 @@
 package com.dangkhoa.socialnetwork
 
-import com.dangkhoa.socialnetwork.entities.rolegroup.RoleGroup
-import com.dangkhoa.socialnetwork.services.RoleGroupService
+import com.dangkhoa.socialnetwork.entities.mongo.rolegroup.RoleGroup
+import com.dangkhoa.socialnetwork.mongo.services.RoleGroupService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

@@ -1,17 +1,18 @@
 package com.dangkhoa.socialnetwork.configuration;
 
-import com.dangkhoa.socialnetwork.entities.comment.Comment;
-import com.dangkhoa.socialnetwork.entities.comment.CommentRequest;
-import com.dangkhoa.socialnetwork.entities.comment.CommentResponse;
-import com.dangkhoa.socialnetwork.entities.post.Post;
-import com.dangkhoa.socialnetwork.entities.post.PostRequest;
-import com.dangkhoa.socialnetwork.entities.post.PostResponse;
-import com.dangkhoa.socialnetwork.entities.topic.Topic;
-import com.dangkhoa.socialnetwork.entities.topic.TopicRequest;
-import com.dangkhoa.socialnetwork.entities.topic.TopicResponse;
-import com.dangkhoa.socialnetwork.entities.user.User;
-import com.dangkhoa.socialnetwork.entities.user.UserRequest;
-import com.dangkhoa.socialnetwork.entities.user.UserResponse;
+import com.dangkhoa.socialnetwork.entities.elasticsearch.post.EsPost;
+import com.dangkhoa.socialnetwork.entities.mongo.comment.Comment;
+import com.dangkhoa.socialnetwork.entities.mongo.comment.CommentRequest;
+import com.dangkhoa.socialnetwork.entities.mongo.comment.CommentResponse;
+import com.dangkhoa.socialnetwork.entities.mongo.post.Post;
+import com.dangkhoa.socialnetwork.entities.mongo.post.PostRequest;
+import com.dangkhoa.socialnetwork.entities.mongo.post.PostResponse;
+import com.dangkhoa.socialnetwork.entities.mongo.topic.Topic;
+import com.dangkhoa.socialnetwork.entities.mongo.topic.TopicRequest;
+import com.dangkhoa.socialnetwork.entities.mongo.topic.TopicResponse;
+import com.dangkhoa.socialnetwork.entities.mongo.user.User;
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserRequest;
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -83,6 +84,61 @@ public class MapperFacadeConfig {
                 .field("numberLike", "numberLike")
                 .field("numberDislike", "numberDislike")
                 .field("numberComment", "numberComment")
+                .register();
+
+        factory.classMap(PostRequest.class, EsPost.class)
+                .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
+                .field("title", "title")
+                .field("content", "content")
+                .field("images", "images")
+                .field("numberLike", "numberLike")
+                .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
+                .register();
+
+        factory.classMap(EsPost.class, PostResponse.class)
+                .field("postId", "postId")
+                .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
+                .field("title", "title")
+                .field("content", "content")
+                .field("images", "images")
+                .field("numberLike", "numberLike")
+                .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
+                .field("createdAt", "createdAt")
+                .field("updatedAt", "updatedAt")
+                .register();
+
+        factory.classMap(Post.class, EsPost.class)
+                .field("id", "id")
+                .field("postId", "postId")
+                .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
+                .field("title", "title")
+                .field("content", "content")
+                .field("images", "images")
+                .field("numberLike", "numberLike")
+                .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
+                .field("createdAt", "createdAt")
+                .field("updatedAt", "updatedAt")
+                .register();
+
+        factory.classMap(EsPost.class, Post.class)
+                .field("id", "id")
+                .field("postId", "postId")
+                .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
+                .field("title", "title")
+                .field("content", "content")
+                .field("images", "images")
+                .field("numberLike", "numberLike")
+                .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
+                .field("createdAt", "createdAt")
+                .field("updatedAt", "updatedAt")
                 .register();
 
         return factory.getMapperFacade();

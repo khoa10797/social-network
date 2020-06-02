@@ -3,7 +3,7 @@ package com.dangkhoa.socialnetwork.base
 import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
-import com.dangkhoa.socialnetwork.entities.user.UserAccount
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

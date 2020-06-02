@@ -1,10 +1,14 @@
 package com.dangkhoa.socialnetwork.event.listener
 
-import com.dangkhoa.socialnetwork.entities.notification.Notification
-import com.dangkhoa.socialnetwork.entities.post.Post
-import com.dangkhoa.socialnetwork.entities.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.mongo.notification.Notification
+import com.dangkhoa.socialnetwork.entities.mongo.post.Post
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
 import com.dangkhoa.socialnetwork.event.event.CommentEvent
-import com.dangkhoa.socialnetwork.services.*
+import com.dangkhoa.socialnetwork.mongo.services.NotificationService
+import com.dangkhoa.socialnetwork.mongo.services.PostService
+import com.dangkhoa.socialnetwork.mongo.services.UserCommentService
+import com.dangkhoa.socialnetwork.mongo.services.UserPostService
+import com.dangkhoa.socialnetwork.mongo.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async

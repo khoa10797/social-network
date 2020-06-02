@@ -4,7 +4,7 @@ package com.dangkhoa.socialnetwork.configuration;
 import com.dangkhoa.socialnetwork.base.jwt.CustomAccessDeniedHandler;
 import com.dangkhoa.socialnetwork.base.jwt.CustomAuthenticationEntryPoint;
 import com.dangkhoa.socialnetwork.base.jwt.JwtAuthenticationTokenFilter;
-import com.dangkhoa.socialnetwork.services.UserDetailsServiceImpl;
+import com.dangkhoa.socialnetwork.mongo.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
