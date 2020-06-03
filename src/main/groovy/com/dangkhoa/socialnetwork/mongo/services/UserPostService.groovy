@@ -18,6 +18,7 @@ class UserPostService {
 
         Integer updatedNumberLike = UserPost.UserStatus.LIKE == userPost.userStatus ? 1 : -1
         if (existUserPost == null) {
+            postService.updateNumberLike(userPost.postId, updatedNumberLike)
             return userPostRepository.save(userPost)
         }
 

@@ -1,6 +1,6 @@
 package com.dangkhoa.socialnetwork.configuration;
 
-import com.dangkhoa.socialnetwork.entities.elasticsearch.post.EsPost;
+import com.dangkhoa.socialnetwork.entities.elasticsearch.EsPost;
 import com.dangkhoa.socialnetwork.entities.mongo.comment.Comment;
 import com.dangkhoa.socialnetwork.entities.mongo.comment.CommentRequest;
 import com.dangkhoa.socialnetwork.entities.mongo.comment.CommentResponse;
@@ -21,6 +21,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MapperFacadeConfig {
+
+    @Bean
+    public MapperFacade mapperFacade() {
+        MapperFactory factory = new DefaultMapperFactory.Builder().build();
+        return factory.getMapperFacade();
+    }
 
     @Bean
     public MapperFacade userMapperFacade() {
@@ -130,6 +136,21 @@ public class MapperFacadeConfig {
                 .field("id", "id")
                 .field("postId", "postId")
                 .field("userOwnerId", "userOwnerId")
+                .field("topicId", "topicId")
+                .field("title", "title")
+                .field("content", "content")
+                .field("images", "images")
+                .field("numberLike", "numberLike")
+                .field("numberDislike", "numberDislike")
+                .field("numberComment", "numberComment")
+                .field("createdAt", "createdAt")
+                .field("updatedAt", "updatedAt")
+                .register();
+
+        factory.classMap(PostResponse.class, EsPost.class)
+                .field("postId", "postId")
+                .field("userOwnerId", "userOwnerId")
+                .field("userOwner", "userOwner")
                 .field("topicId", "topicId")
                 .field("title", "title")
                 .field("content", "content")

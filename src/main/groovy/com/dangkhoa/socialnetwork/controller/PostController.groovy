@@ -5,6 +5,7 @@ import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.elasticsearch.services.EsPostService
+import com.dangkhoa.socialnetwork.entities.elasticsearch.EsPost
 import com.dangkhoa.socialnetwork.entities.mongo.post.Post
 import com.dangkhoa.socialnetwork.entities.mongo.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.mongo.post.PostResponse
@@ -85,6 +86,8 @@ class PostController extends BaseController {
     ResponseEntity<BaseResponse> add(@RequestBody @Valid PostRequest postRequest) {
         Post post = postMapperFacade.map(postRequest, Post.class)
         Post insertedPost = postService.save(post)
+        EsPost esPost = postMapperFacade.map(insertedPost, EsPost.class)
+        esPostService.indexDocument(esPost)
 
         PostResponse postResponse = postMapperFacade.map(insertedPost, PostResponse.class)
         UserResponse userOwner = userService.getByUserId(postResponse.userOwnerId)
@@ -151,6 +154,20 @@ class PostController extends BaseController {
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 meta: buildMetaResponse(page, pageSize),
+                data: postResponses
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
+    @GetMapping("/filter")
+    ResponseEntity<ResponseData> filter(EsPost esPost) {
+        List<EsPost> esPosts = esPostService.filter(esPost)
+        List<String> postIds = esPosts.collect { item -> item.postId }
+        List<PostResponse> postResponses = postService.getByPostIds(postIds)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
                 data: postResponses
         )
 

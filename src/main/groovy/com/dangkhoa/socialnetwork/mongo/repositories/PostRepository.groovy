@@ -26,6 +26,7 @@ class PostRepository {
                 limit: limit,
                 skip: limit * (page - 1 < 0 ? 0 : page - 1)
         ).addCriteria(Criteria.where("user_owner_id").is(userOwnerId))
+        query.with(Sort.by(Sort.Direction.DESC, "created_at"))
         return mongoTemplate.find(query, Post.class)
     }
 
