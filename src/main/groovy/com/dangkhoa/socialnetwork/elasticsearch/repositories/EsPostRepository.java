@@ -3,23 +3,30 @@ package com.dangkhoa.socialnetwork.elasticsearch.repositories;
 import com.dangkhoa.socialnetwork.entities.elasticsearch.EsPost;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class EsPostRepository {
+
+    private static final String TYPE_NAME = "posts";
+    private static final String INDEX_NAME = "social-network";
 
     private final ObjectMapper objectMapper;
     private final ElasticsearchOperations elasticsearchOperations;
@@ -31,27 +38,12 @@ public class EsPostRepository {
         this.elasticsearchClient = elasticsearchClient;
     }
 
-    public String indexDocument(EsPost esPost) {
-        IndexQuery indexQuery = new IndexQueryBuilder()
-                .withId(esPost.getId())
-                .withIndexName("social-network")
-                .withType("posts")
-                .withObject(esPost)
-                .build();
-        return elasticsearchOperations.index(indexQuery);
-    }
+    public String indexDocument(EsPost esPost) throws IOException {
+        IndexRequest indexRequest = new IndexRequest(INDEX_NAME, TYPE_NAME, esPost.getPostId());
+        String source = objectMapper.writeValueAsString(esPost);
+        indexRequest.source(source, XContentType.JSON);
 
-    public void bulkIndexDocument(List<EsPost> esPosts) {
-        List<IndexQuery> indexQueries = esPosts.stream()
-                .map(item -> new IndexQueryBuilder()
-                        .withId(item.getId())
-                        .withIndexName("social-network")
-                        .withType("posts")
-                        .withObject(item)
-                        .build()
-                ).collect(Collectors.toList());
-
-        elasticsearchOperations.bulkIndex(indexQueries);
+        return elasticsearchClient.index(indexRequest, RequestOptions.DEFAULT).getId();
     }
 
     public List<EsPost> filter(SearchRequest searchRequest) throws IOException {
@@ -68,5 +60,23 @@ public class EsPostRepository {
         }
 
         return result;
+    }
+
+    public String deleteById(String id) throws IOException {
+        DeleteRequest deleteRequest = new DeleteRequest(INDEX_NAME, TYPE_NAME, id);
+        return elasticsearchClient.delete(deleteRequest, RequestOptions.DEFAULT).getId();
+    }
+
+    public UpdateResponse update(String id, EsPost esPost) throws IOException {
+        XContentBuilder builder = XContentFactory.jsonBuilder();
+        builder.startObject();
+        {
+            builder.timeField("title", esPost.getTitle());
+            builder.field("content", esPost.getContent());
+        }
+        builder.endObject();
+        UpdateRequest updateRequest = new UpdateRequest(INDEX_NAME, TYPE_NAME, id).doc(builder);
+
+        return elasticsearchClient.update(updateRequest, RequestOptions.DEFAULT);
     }
 }

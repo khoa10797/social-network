@@ -113,6 +113,9 @@ class PostController extends BaseController {
         }
 
         Post updatedPost = postService.save(post)
+        EsPost esPost = postMapperFacade.map(updatedPost, EsPost.class)
+        esPostService.update(id, esPost)
+
         PostResponse postResponse = postMapperFacade.map(updatedPost, PostResponse.class)
         ResponseData data = new ResponseData(data: postResponse)
 
@@ -132,8 +135,9 @@ class PostController extends BaseController {
                     )
                     , HttpStatus.FORBIDDEN)
         }
-
         postService.remove(id)
+        esPostService.deleteById(id);
+
         return new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 

@@ -5,6 +5,7 @@ import com.dangkhoa.socialnetwork.entities.elasticsearch.EsPost;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -22,12 +23,8 @@ public class EsPostService {
         this.esPostRepository = esPostRepository;
     }
 
-    public String indexDocument(EsPost esPost) throws JsonProcessingException {
+    public String indexDocument(EsPost esPost) throws IOException {
         return esPostRepository.indexDocument(esPost);
-    }
-
-    public void bulkIndexDocument(List<EsPost> esPosts) {
-        esPostRepository.bulkIndexDocument(esPosts);
     }
 
     public List<EsPost> filter(EsPost esPost) throws IOException {
@@ -47,5 +44,13 @@ public class EsPostService {
         searchSourceBuilder.query(queryBuilder);
         searchRequest.source(searchSourceBuilder);
         return esPostRepository.filter(searchRequest);
+    }
+
+    public String deleteById(String id) throws IOException {
+        return esPostRepository.deleteById(id);
+    }
+
+    public UpdateResponse update(String id, EsPost esPost) throws IOException {
+        return esPostRepository.update(id, esPost);
     }
 }
