@@ -9,8 +9,8 @@ class UserAccount extends org.springframework.security.core.userdetails.User {
         userId = user.userId
         email = user.email
         name = user.name
-        age = user.age
-        sex = user.sex
+        dateOfBirth = user.dateOfBirth
+        sex = user.gender
         active = user.active
         avatar = user.avatar
     }
@@ -18,7 +18,7 @@ class UserAccount extends org.springframework.security.core.userdetails.User {
     String userId
     String email
     String name
-    Integer age
+    Long dateOfBirth
     Integer sex
     Boolean active
     String avatar

@@ -3,8 +3,8 @@ package com.dangkhoa.socialnetwork.entities.mongo.user
 class UserRequest {
 
     String name
-    Integer age
-    Integer sex
+    Long dateOfBirth
+    Integer gender
     String userName
     String password
     List<String> roleGroupIds

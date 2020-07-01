@@ -4,8 +4,8 @@ class UserResponse {
 
     String userId
     String name
-    Integer age
-    Integer sex
+    Long dateOfBirth
+    Integer gender
     String userName
     String email
     Boolean active

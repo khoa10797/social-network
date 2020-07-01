@@ -1,6 +1,7 @@
 package com.dangkhoa.socialnetwork.mongo.services
 
 import com.dangkhoa.socialnetwork.entities.mongo.notification.Notification
+import com.dangkhoa.socialnetwork.mongo.repositories.NotificationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service
 class NotificationService {
 
     @Autowired
-    com.dangkhoa.socialnetwork.mongo.repositories.NotificationRepository notificationRepository
+    NotificationRepository notificationRepository
 
     Notification save(Notification notification) {
         return notificationRepository.save(notification)

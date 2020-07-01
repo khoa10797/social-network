@@ -12,8 +12,8 @@ class User {
     List<String> roleGroupIds
     String email
     String name
-    Integer age
-    Integer sex
+    Long dateOfBirth
+    Integer gender
     Boolean active
     String avatar
     String intro
