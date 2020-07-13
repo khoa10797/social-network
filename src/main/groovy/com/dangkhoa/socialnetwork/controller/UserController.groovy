@@ -7,7 +7,9 @@ import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.mongo.user.User
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserRequest
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.mongo.userfollow.UserFollow
 import com.dangkhoa.socialnetwork.mongo.services.JwtService
+import com.dangkhoa.socialnetwork.mongo.services.UserFollowService
 import com.dangkhoa.socialnetwork.mongo.services.UserService
 import ma.glasnost.orika.MapperFacade
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +27,8 @@ class UserController extends BaseController {
     MapperFacade userMapperFacade
     @Autowired
     UserService userService
+    @Autowired
+    UserFollowService userFollowService
     @Autowired
     JwtService jwtService
 
@@ -93,5 +97,12 @@ class UserController extends BaseController {
                 error: "Thông tin tài khoản hoặc mật khẩu không chính xác"
         )
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST)
+    }
+
+    @PutMapping("/follow")
+    ResponseEntity<ResponseData> follow(@RequestBody UserFollow userFollow) {
+        UserFollow savedUserFollow = userFollowService.save(userFollow)
+        ResponseData data = new ResponseData(data: savedUserFollow)
+        return new ResponseEntity<>(data, HttpStatus.OK)
     }
 }

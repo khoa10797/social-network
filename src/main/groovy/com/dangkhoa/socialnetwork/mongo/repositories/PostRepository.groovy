@@ -81,6 +81,7 @@ class PostRepository {
                 limit: limit,
                 skip: limit * (page - 1 < 0 ? 0 : page - 1)
         ).addCriteria(Criteria.where("topic_id").is(topicId))
+        query.with(Sort.by(Sort.Direction.DESC, "created_at"))
         return mongoTemplate.find(query, Post.class)
     }
 }

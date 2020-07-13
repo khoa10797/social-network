@@ -1,9 +1,13 @@
 package com.dangkhoa.socialnetwork.mongo.services
 
+import com.dangkhoa.socialnetwork.base.SocialNetworkContext
 import com.dangkhoa.socialnetwork.common.Constant
 import com.dangkhoa.socialnetwork.entities.mongo.user.User
+import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
+import com.dangkhoa.socialnetwork.entities.mongo.userfollow.UserFollow
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
+import com.dangkhoa.socialnetwork.mongo.repositories.UserRepository
 import ma.glasnost.orika.MapperFacade
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
@@ -15,9 +19,13 @@ import org.springframework.stereotype.Service
 class UserService {
 
     @Autowired
+    SocialNetworkContext socialNetworkContext
+    @Autowired
     MapperFacade userMapperFacade
     @Autowired
-    com.dangkhoa.socialnetwork.mongo.repositories.UserRepository userRepository
+    UserRepository userRepository
+    @Autowired
+    UserFollowService userFollowService
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder
 
@@ -43,7 +51,9 @@ class UserService {
 
     UserResponse getByUserId(String userId) {
         User user = findByUserId(userId)
-        return userMapperFacade.map(user, UserResponse.class)
+        UserResponse userResponse = userMapperFacade.map(user, UserResponse.class)
+        fillUserStatus(userResponse)
+        return userResponse
     }
 
     Long remove(String userId) {
@@ -92,5 +102,26 @@ class UserService {
     List<UserResponse> getByUserIds(List<String> userIds) {
         List<User> users = findByUserId(userIds)
         return userMapperFacade.mapAsList(users, UserResponse.class)
+    }
+
+    void updateNumberFollow(String userId, Integer quantity) {
+        User user = userRepository.findByUserId(userId)
+        if (user.numberFollow <= 0 && quantity < 0) {
+            return
+        }
+
+        userRepository.updateNumberFollow(userId, quantity)
+    }
+
+    private void fillUserStatus(UserResponse userResponse) {
+        UserAccount currentUser = socialNetworkContext.getCurrentUser()
+        if (currentUser == null) {
+            return
+        }
+
+        UserFollow userFollow = userFollowService.findByUserIdAndFollowedUserId(currentUser.userId, userResponse.userId)
+        if (userFollow != null) {
+            userResponse.userStatus = userFollow.userStatus
+        }
     }
 }

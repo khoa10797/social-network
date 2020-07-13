@@ -13,6 +13,8 @@ class UserResponse {
     List<String> roleGroupIds
     String intro
     String description
+    Integer numberFollow
+    String userStatus
     Long createdAt
     Long updatedAt
 

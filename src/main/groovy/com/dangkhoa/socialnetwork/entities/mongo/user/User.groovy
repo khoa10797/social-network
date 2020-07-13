@@ -18,6 +18,7 @@ class User {
     String avatar
     String intro
     String description
+    Integer numberFollow
     Long createdAt
     Long updatedAt
 

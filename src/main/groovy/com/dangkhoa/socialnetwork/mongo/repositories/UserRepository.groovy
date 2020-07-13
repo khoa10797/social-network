@@ -61,4 +61,13 @@ class UserRepository {
         Query query = new Query(Criteria.where("user_id").in(userIds))
         return mongoTemplate.find(query, User.class)
     }
+
+    void updateNumberFollow(String userId, Integer quantity) {
+        Document filter = [user_id: userId]
+        Document update = [
+                $inc: [number_follow: quantity]
+        ]
+
+        mongoTemplate.getCollection(Constant.USERS).updateOne(filter, update)
+    }
 }
