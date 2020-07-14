@@ -9,6 +9,7 @@ import com.dangkhoa.socialnetwork.entities.mongo.userfollow.UserFollow
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
 import com.dangkhoa.socialnetwork.mongo.repositories.UserRepository
 import ma.glasnost.orika.MapperFacade
+import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
@@ -75,6 +76,10 @@ class UserService {
             user.active = true
             user.createdAt = new Date().getTime()
             user.updatedAt = new Date().getTime()
+            if (CollectionUtils.isEmpty(user.roleGroupIds)) {
+                user.roleGroupIds = Arrays.asList("USER")
+            }
+
             return userRepository.save(user)
         }
 

@@ -57,18 +57,24 @@ class UserController extends BaseController {
     }
 
     @PostMapping
-    ResponseEntity add(@RequestBody @Valid UserRequest userRequest) {
+    ResponseEntity<ResponseData> add(@RequestBody @Valid UserRequest userRequest) {
         User user = userMapperFacade.map(userRequest, User.class)
-        userService.save(user)
-        return new ResponseEntity(HttpStatus.CREATED)
+        User savedUser = userService.save(user)
+        UserResponse userResponse = userService.getByUserId(savedUser.userId)
+        ResponseData data = new ResponseData(data: userResponse)
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
     @PutMapping("/{id}")
-    ResponseEntity update(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
+    ResponseEntity<ResponseData> update(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
         User user = userMapperFacade.map(userRequest, User.class)
         user.userId = id
-        userService.save(user)
-        return new ResponseEntity(HttpStatus.NO_CONTENT)
+        User savedUser = userService.save(user)
+        UserResponse userResponse = userService.getByUserId(savedUser.userId)
+        ResponseData data = new ResponseData(data: userResponse)
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
     @DeleteMapping("/{id}")
