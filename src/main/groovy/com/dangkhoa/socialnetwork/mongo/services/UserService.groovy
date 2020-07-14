@@ -124,4 +124,11 @@ class UserService {
             userResponse.userStatus = userFollow.userStatus
         }
     }
+
+    List<UserResponse> getFollowedByUserId(String userId) {
+        List<UserFollow> userFollows = userFollowService.getUserFollowedByUserId(userId)
+        List<String> followerUserIds = userFollows.collect { it.followedUserId }
+
+        return getByUserIds(followerUserIds)
+    }
 }

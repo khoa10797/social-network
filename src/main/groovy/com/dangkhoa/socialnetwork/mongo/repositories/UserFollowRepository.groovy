@@ -24,5 +24,9 @@ class UserFollowRepository {
         return mongoTemplate.findOne(query, UserFollow.class)
     }
 
-
+    List<UserFollow> getUserFollowedByUserId(String userId) {
+        Query query = new Query()
+                .addCriteria(Criteria.where("user_id").is(userId))
+        return mongoTemplate.find(query, UserFollow.class)
+    }
 }

@@ -105,4 +105,11 @@ class UserController extends BaseController {
         ResponseData data = new ResponseData(data: savedUserFollow)
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
+
+    @GetMapping("/follower/{userId}")
+    ResponseEntity<ResponseData> getFollowerUser(@PathVariable("userId") String userId) {
+        List<UserResponse> userResponses = userService.getFollowedByUserId(userId)
+        ResponseData data = new ResponseData(data: userResponses)
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
 }

@@ -34,4 +34,8 @@ class UserFollowService {
     UserFollow findByUserIdAndFollowedUserId(String userId, String followedUserId) {
         return userFollowRepository.findByUserIdAndFollowedUserId(userId, followedUserId)
     }
+
+    List<UserFollow> getUserFollowedByUserId(String userId) {
+        return userFollowRepository.getUserFollowedByUserId(userId)
+    }
 }
