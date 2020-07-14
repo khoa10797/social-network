@@ -94,4 +94,17 @@ class TopicController extends BaseController {
         )
         return new ResponseEntity<BaseResponse>(data, HttpStatus.OK)
     }
+
+    @GetMapping("/user/{userId}")
+    ResponseEntity<BaseResponse> getByUserFollow(@PathVariable String userId) {
+        List<UserTopic> userTopics = userTopicService.findByUserId(userId)
+        List<String> topicIds = userTopics.collect { it.topicId }
+        List<TopicResponse> topicResponses = topicService.getByTopicIds(topicIds)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: topicResponses
+        )
+        return new ResponseEntity<BaseResponse>(data, HttpStatus.OK)
+    }
 }

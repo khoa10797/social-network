@@ -188,4 +188,8 @@ class PostService {
 
         return postResponses
     }
+
+    Long countByUserOwnerId(String userId) {
+        return postRepository.countByUserOwnerId(userId)
+    }
 }

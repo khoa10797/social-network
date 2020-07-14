@@ -45,6 +45,18 @@ class PostController extends BaseController {
     @Autowired
     PostEventPublisher postEventPublisher
 
+/*    @GetMapping("/suggest")
+    ResponseEntity<BaseResponse> suggestPost() {
+        TrendingPost trendingPost = trendingPostService.getLast()
+        List<PostResponse> postResponses = postService.getByPostIds(trendingPost.postIds)
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: postResponses
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }*/
+
     @GetMapping("/trending")
     ResponseEntity<BaseResponse> getTrendingPost() {
         TrendingPost trendingPost = trendingPostService.getLast()
@@ -173,6 +185,18 @@ class PostController extends BaseController {
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: postResponses
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
+    @GetMapping("/count_by_user/{userOwnerId}")
+    ResponseEntity<ResponseData> countByUser(@PathVariable("userOwnerId") String userOwnerId) {
+        long numberPostByUserOwner = postService.countByUserOwnerId(userOwnerId)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: numberPostByUserOwner
         )
 
         return new ResponseEntity<>(data, HttpStatus.OK)

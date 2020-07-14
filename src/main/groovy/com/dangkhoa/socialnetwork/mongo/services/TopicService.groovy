@@ -7,6 +7,7 @@ import com.dangkhoa.socialnetwork.entities.mongo.topic.TopicResponse
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.mongo.usertopic.UserTopic
 import com.dangkhoa.socialnetwork.exception.InValidObjectException
+import com.dangkhoa.socialnetwork.mongo.repositories.TopicRepository
 import ma.glasnost.orika.MapperFacade
 import org.apache.commons.lang3.StringUtils
 import org.bson.types.ObjectId
@@ -19,7 +20,7 @@ class TopicService {
     @Autowired
     SocialNetworkContext socialNetworkContext
     @Autowired
-    com.dangkhoa.socialnetwork.mongo.repositories.TopicRepository topicRepository
+    TopicRepository topicRepository
     @Autowired
     UserTopicService userTopicService
     @Autowired
@@ -47,6 +48,11 @@ class TopicService {
         fillUserStatus(topicResponse)
 
         return topicResponse
+    }
+
+    List<TopicResponse> getByTopicIds(List<String> topicIds) {
+        List<Topic> topics = topicRepository.findByTopicIds(topicIds)
+        return topicMapperFacade.mapAsList(topics, TopicResponse.class)
     }
 
     Topic save(Topic topic) {

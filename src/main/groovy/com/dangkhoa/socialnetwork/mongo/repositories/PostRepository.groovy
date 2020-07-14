@@ -84,4 +84,11 @@ class PostRepository {
         query.with(Sort.by(Sort.Direction.DESC, "created_at"))
         return mongoTemplate.find(query, Post.class)
     }
+
+    Long countByUserOwnerId(String userId) {
+        Query query = new Query()
+        Criteria criteria = Criteria.where("user_owner_id").is(userId)
+        query.addCriteria(criteria)
+        return mongoTemplate.count(query, Post.class)
+    }
 }

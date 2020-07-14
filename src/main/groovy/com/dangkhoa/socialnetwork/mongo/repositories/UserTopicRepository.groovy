@@ -50,4 +50,11 @@ class UserTopicRepository {
                 .forEachRemaining { item -> result.add(item?.user_id as String) }
         return result
     }
+
+    List<UserTopic> findByUserId(String userId) {
+        Query query = new Query()
+                .addCriteria(Criteria.where("user_id").is(userId))
+                .addCriteria(Criteria.where("user_status").is("follow"))
+        return mongoTemplate.find(query, UserTopic.class)
+    }
 }

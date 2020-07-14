@@ -20,6 +20,11 @@ class TopicRepository {
         return mongoTemplate.findOne(query, Topic.class)
     }
 
+    List<Topic> findByTopicIds(List<String> topicIds) {
+        Query query = new Query().addCriteria(Criteria.where("topic_id").in(topicIds))
+        return mongoTemplate.find(query, Topic.class)
+    }
+
     List<Topic> findTopics(Integer page, Integer limit) {
         Query query = new Query(
                 limit: limit,

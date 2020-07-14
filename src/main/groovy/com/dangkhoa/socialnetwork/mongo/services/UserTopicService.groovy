@@ -1,6 +1,7 @@
 package com.dangkhoa.socialnetwork.mongo.services
 
 import com.dangkhoa.socialnetwork.entities.mongo.usertopic.UserTopic
+import com.dangkhoa.socialnetwork.mongo.repositories.UserTopicRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service
 class UserTopicService {
 
     @Autowired
-    com.dangkhoa.socialnetwork.mongo.repositories.UserTopicRepository userTopicRepository
+    UserTopicRepository userTopicRepository
     @Autowired
     TopicService topicService
 
@@ -43,5 +44,9 @@ class UserTopicService {
 
     List<String> getUserIdByTopicId(String topicId) {
         return userTopicRepository.getUserIdByTopicId(topicId)
+    }
+
+    List<UserTopic> findByUserId(String userId) {
+        return userTopicRepository.findByUserId(userId)
     }
 }
