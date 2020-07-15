@@ -22,6 +22,7 @@ public class PostResponse {
     private Long numberComment;
     private String userStatus;
     private Boolean bookmark;
+    private Boolean isNew;
     private Long createdAt;
     private Long updatedAt;
 }

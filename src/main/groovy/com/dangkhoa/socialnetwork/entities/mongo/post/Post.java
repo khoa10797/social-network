@@ -20,6 +20,7 @@ public class Post {
     private Integer numberLike;
     private Integer numberDislike;
     private Integer numberComment;
+    private Boolean isNew;
     private Long createdAt;
     private Long updatedAt;
 }

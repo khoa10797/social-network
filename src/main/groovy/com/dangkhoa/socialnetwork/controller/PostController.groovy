@@ -45,6 +45,27 @@ class PostController extends BaseController {
     @Autowired
     PostEventPublisher postEventPublisher
 
+    @GetMapping("/suggest")
+    ResponseEntity<BaseResponse> getSuggestPost() {
+        TrendingPost trendingPost = trendingPostService.getLast()
+        List<String> trendingPostIds = postService.getByPostIds(trendingPost.postIds).collect { it.postId }
+        List<String> newPostIds = postService.findNewPost(50).collect { it.postId }
+
+        List<String> postIds = (trendingPostIds + newPostIds).toSet().toList()
+        List<PostResponse> postResponses = postService.getByPostIds(postIds)
+        Collections.shuffle(postResponses)
+        if (postResponses.size() > 20) {
+            postResponses = postResponses.subList(0, 19)
+        }
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: postResponses
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
     @GetMapping("/trending")
     ResponseEntity<BaseResponse> getTrendingPost() {
         TrendingPost trendingPost = trendingPostService.getLast()

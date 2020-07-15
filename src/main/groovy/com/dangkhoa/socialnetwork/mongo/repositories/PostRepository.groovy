@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -90,5 +91,27 @@ class PostRepository {
         Criteria criteria = Criteria.where("user_owner_id").is(userId)
         query.addCriteria(criteria)
         return mongoTemplate.count(query, Post.class)
+    }
+
+    List<Post> findNewPost() {
+        Query query = new Query()
+                .addCriteria(Criteria.where("is_new").is(true))
+
+        return mongoTemplate.find(query, Post.class)
+    }
+
+    List<Post> findNewPost(Integer limit) {
+        Query query = new Query(
+                limit: limit
+        ).addCriteria(Criteria.where("is_new").is(true))
+
+        return mongoTemplate.find(query, Post.class)
+    }
+
+    Long convertNewPostToOld(List<String> postIds) {
+        Query query = new Query().addCriteria(Criteria.where("post_id").in(postIds))
+        Update update = new Update().set("is_new", false)
+
+        return mongoTemplate.updateMulti(query, update, Post.class).modifiedCount
     }
 }

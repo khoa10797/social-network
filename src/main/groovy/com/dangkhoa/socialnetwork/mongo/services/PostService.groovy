@@ -117,6 +117,7 @@ class PostService {
         post.updatedAt = time
         post.numberComment = 0
         post.numberLike = 0
+        post.isNew = true
         if (StringUtils.isNotBlank(post.topicId)) {
             topicService.updateNumberPost(post.topicId, 1)
         }
@@ -199,6 +200,27 @@ class PostService {
         List<String> postIds = userPosts.collect { it.postId }
         List<PostResponse> postResponses = getByPostIds(postIds)
         postResponses.each { item -> item.bookmark = true }
+
+        return postResponses
+    }
+
+    List<Post> findNewPost() {
+        return postRepository.findNewPost()
+    }
+
+    Long convertNewPostToOld(List<String> postIds) {
+        return postRepository.convertNewPostToOld(postIds)
+    }
+
+    List<Post> findNewPost(Integer limit) {
+        return postRepository.findNewPost(limit)
+    }
+
+    List<PostResponse> getNewPost(Integer limit) {
+        List<Post> posts = postRepository.findNewPost(limit)
+        List<PostResponse> postResponses = postMapperFacade.mapAsList(posts, PostResponse.class)
+        fillUserOwner(postResponses)
+        fillUserStatus(postResponses)
 
         return postResponses
     }

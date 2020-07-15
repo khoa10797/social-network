@@ -78,6 +78,7 @@ public class MapperFacadeConfig {
                 .field("numberLike", "numberLike")
                 .field("numberDislike", "numberDislike")
                 .field("numberComment", "numberComment")
+                .field("isNew", "isNew")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
