@@ -9,6 +9,7 @@ class UserPost {
     String userId
     String postId
     String userStatus
+    Boolean bookmark
 
     static class UserStatus {
         static final String LIKE = "like"

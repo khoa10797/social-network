@@ -47,4 +47,11 @@ class UserPostRepository {
                 .forEachRemaining { item -> result.add(item?.user_id as String) }
         return result
     }
+
+    List<UserPost> findBookmarkByUserId(String userId) {
+        Query query = new Query()
+                .addCriteria(Criteria.where("user_id").is(userId))
+                .addCriteria(Criteria.where("bookmark").is(true))
+        return mongoTemplate.find(query, UserPost.class)
+    }
 }

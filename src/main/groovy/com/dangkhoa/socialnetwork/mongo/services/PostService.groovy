@@ -92,6 +92,7 @@ class PostService {
             userPosts.each { userPost ->
                 if (postResponse.postId == userPost.postId) {
                     postResponse.userStatus = userPost.userStatus
+                    postResponse.bookmark = userPost.bookmark
                 }
             }
         }
@@ -191,5 +192,14 @@ class PostService {
 
     Long countByUserOwnerId(String userId) {
         return postRepository.countByUserOwnerId(userId)
+    }
+
+    List<PostResponse> getBookmarkPost(String userId) {
+        List<UserPost> userPosts = userPostService.findBookmarkByUserId(userId)
+        List<String> postIds = userPosts.collect { it.postId }
+        List<PostResponse> postResponses = getByPostIds(postIds)
+        postResponses.each { item -> item.bookmark = true }
+
+        return postResponses
     }
 }

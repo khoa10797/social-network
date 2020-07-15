@@ -45,18 +45,6 @@ class PostController extends BaseController {
     @Autowired
     PostEventPublisher postEventPublisher
 
-/*    @GetMapping("/suggest")
-    ResponseEntity<BaseResponse> suggestPost() {
-        TrendingPost trendingPost = trendingPostService.getLast()
-        List<PostResponse> postResponses = postService.getByPostIds(trendingPost.postIds)
-        ResponseData data = new ResponseData(
-                statusCode: 200,
-                data: postResponses
-        )
-
-        return new ResponseEntity<>(data, HttpStatus.OK)
-    }*/
-
     @GetMapping("/trending")
     ResponseEntity<BaseResponse> getTrendingPost() {
         TrendingPost trendingPost = trendingPostService.getLast()
@@ -197,6 +185,29 @@ class PostController extends BaseController {
         ResponseData data = new ResponseData(
                 statusCode: 200,
                 data: numberPostByUserOwner
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
+    @PostMapping("/bookmark")
+    ResponseEntity<ResponseData> bookmarkPost(@RequestBody UserPost userPost) {
+        UserPost savedUserPost = userPostService.save(userPost)
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: savedUserPost
+        )
+
+        return new ResponseEntity<>(data, HttpStatus.OK)
+    }
+
+    @GetMapping("/bookmark/user/{userId}")
+    ResponseEntity<ResponseData> getBookmarkPost(@PathVariable("userId") String userId) {
+        List<PostResponse> postResponses = postService.getBookmarkPost(userId)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: postResponses
         )
 
         return new ResponseEntity<>(data, HttpStatus.OK)

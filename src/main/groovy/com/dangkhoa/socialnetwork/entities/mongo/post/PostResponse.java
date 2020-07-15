@@ -21,6 +21,7 @@ public class PostResponse {
     private UserResponse userOwner;
     private Long numberComment;
     private String userStatus;
+    private Boolean bookmark;
     private Long createdAt;
     private Long updatedAt;
 }
