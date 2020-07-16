@@ -107,4 +107,15 @@ class TopicController extends BaseController {
         )
         return new ResponseEntity<BaseResponse>(data, HttpStatus.OK)
     }
+
+    @PutMapping("/lock/{topicId}")
+    ResponseEntity<BaseResponse> lockTopic(@PathVariable String topicId, @RequestParam("lock") boolean lock) {
+        Topic topic = topicService.updateLock(topicId, lock)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: topic
+        )
+        return new ResponseEntity<BaseResponse>(data, HttpStatus.OK)
+    }
 }

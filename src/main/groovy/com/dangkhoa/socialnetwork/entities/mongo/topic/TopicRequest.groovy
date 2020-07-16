@@ -8,5 +8,7 @@ class TopicRequest {
     String description
     String backgroundImage
     String avatar
+    String icon
+    Boolean lock
 
 }

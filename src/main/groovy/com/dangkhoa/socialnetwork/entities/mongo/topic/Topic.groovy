@@ -14,6 +14,8 @@ class Topic {
     String description
     String backgroundImage
     String avatar
+    String icon
+    Boolean lock
     Long createdAt
     Long updatedAt
 

@@ -145,6 +145,8 @@ public class MapperFacadeConfig {
                 .field("description", "description")
                 .field("backgroundImage", "backgroundImage")
                 .field("avatar", "avatar")
+                .field("lock", "lock")
+                .field("icon", "icon")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
@@ -155,6 +157,8 @@ public class MapperFacadeConfig {
                 .field("description", "description")
                 .field("backgroundImage", "backgroundImage")
                 .field("avatar", "avatar")
+                .field("lock", "lock")
+                .field("icon", "icon")
                 .register();
 
         return factory.getMapperFacade();

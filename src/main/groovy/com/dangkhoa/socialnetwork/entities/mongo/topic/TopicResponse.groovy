@@ -10,6 +10,8 @@ class TopicResponse {
     String description
     String backgroundImage
     String avatar
+    String icon
+    Boolean lock
     String userStatus
     Long createdAt
     Long updatedAt

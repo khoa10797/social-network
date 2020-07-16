@@ -110,7 +110,8 @@ class PostRepository {
 
     Long convertNewPostToOld(List<String> postIds) {
         Query query = new Query().addCriteria(Criteria.where("post_id").in(postIds))
-        Update update = new Update().set("is_new", false)
+        Update update = new Update()
+        update.set("is_new", false)
 
         return mongoTemplate.updateMulti(query, update, Post.class).modifiedCount
     }

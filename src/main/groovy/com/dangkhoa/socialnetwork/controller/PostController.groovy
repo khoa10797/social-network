@@ -9,12 +9,14 @@ import com.dangkhoa.socialnetwork.entities.elasticsearch.EsPost
 import com.dangkhoa.socialnetwork.entities.mongo.post.Post
 import com.dangkhoa.socialnetwork.entities.mongo.post.PostRequest
 import com.dangkhoa.socialnetwork.entities.mongo.post.PostResponse
+import com.dangkhoa.socialnetwork.entities.mongo.topic.Topic
 import com.dangkhoa.socialnetwork.entities.mongo.trendingpost.TrendingPost
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.mongo.userpost.UserPost
 import com.dangkhoa.socialnetwork.event.publisher.PostEventPublisher
 import com.dangkhoa.socialnetwork.mongo.services.PostService
+import com.dangkhoa.socialnetwork.mongo.services.TopicService
 import com.dangkhoa.socialnetwork.mongo.services.TrendingPostService
 import com.dangkhoa.socialnetwork.mongo.services.UserPostService
 import com.dangkhoa.socialnetwork.mongo.services.UserService
@@ -44,6 +46,8 @@ class PostController extends BaseController {
     TrendingPostService trendingPostService
     @Autowired
     PostEventPublisher postEventPublisher
+    @Autowired
+    TopicService topicService
 
     @GetMapping("/suggest")
     ResponseEntity<BaseResponse> getSuggestPost() {
@@ -105,6 +109,11 @@ class PostController extends BaseController {
 
     @PostMapping
     ResponseEntity<BaseResponse> add(@RequestBody @Valid PostRequest postRequest) {
+        Topic topic = topicService.findByTopicId(postRequest.topicId)
+        if (topic.lock) {
+            return new ResponseEntity<>(new ResponseError(message: "Chủ đề đã bị khoá"), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         Post post = postMapperFacade.map(postRequest, Post.class)
         Post insertedPost = postService.save(post)
         EsPost esPost = postMapperFacade.map(insertedPost, EsPost.class)

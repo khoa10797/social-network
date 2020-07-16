@@ -105,4 +105,11 @@ class TopicService {
             topicResponse.userStatus = userTopic.userStatus
         }
     }
+
+    Topic updateLock(String topicId, Boolean lock) {
+        Topic topic = findByTopicId(topicId)
+        topic.lock = lock
+
+        return topicRepository.save(topic)
+    }
 }
