@@ -1,16 +1,19 @@
 package com.dangkhoa.socialnetwork.controller
 
 import com.dangkhoa.socialnetwork.base.BaseController
+import com.dangkhoa.socialnetwork.base.response.BaseResponse
 import com.dangkhoa.socialnetwork.base.response.ResponseData
 import com.dangkhoa.socialnetwork.base.response.ResponseError
 import com.dangkhoa.socialnetwork.entities.mongo.comment.Comment
 import com.dangkhoa.socialnetwork.entities.mongo.comment.CommentRequest
 import com.dangkhoa.socialnetwork.entities.mongo.comment.CommentResponse
+import com.dangkhoa.socialnetwork.entities.mongo.post.Post
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserAccount
 import com.dangkhoa.socialnetwork.entities.mongo.user.UserResponse
 import com.dangkhoa.socialnetwork.entities.mongo.usercomment.UserComment
 import com.dangkhoa.socialnetwork.event.publisher.CommentEventPublisher
 import com.dangkhoa.socialnetwork.mongo.services.CommentService
+import com.dangkhoa.socialnetwork.mongo.services.PostService
 import com.dangkhoa.socialnetwork.mongo.services.UserCommentService
 import com.dangkhoa.socialnetwork.mongo.services.UserService
 import ma.glasnost.orika.MapperFacade
@@ -31,6 +34,8 @@ class CommentController extends BaseController {
     CommentService commentService
     @Autowired
     UserService userService
+    @Autowired
+    PostService postService
     @Autowired
     UserCommentService userCommentService
     @Autowired
@@ -65,7 +70,12 @@ class CommentController extends BaseController {
     }
 
     @PostMapping
-    ResponseEntity<ResponseData> add(@RequestBody @Valid CommentRequest commentRequest) {
+    ResponseEntity<BaseResponse> add(@RequestBody @Valid CommentRequest commentRequest) {
+        Post post = postService.findByPostId(commentRequest.postId)
+        if (post.lock) {
+            return new ResponseEntity<>(new ResponseError(message: "Bài viết đã bị khoá"), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         Comment comment = commentMapperFacade.map(commentRequest, Comment.class)
         Comment insertedComment = commentService.save(comment)
 

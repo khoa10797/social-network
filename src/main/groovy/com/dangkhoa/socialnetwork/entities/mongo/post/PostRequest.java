@@ -17,4 +17,5 @@ public class PostRequest {
     private Integer numberLike;
     private Integer numberDislike;
     private Integer numberComment;
+    private Boolean lock;
 }

@@ -224,4 +224,10 @@ class PostService {
 
         return postResponses
     }
+
+    Post updateLock(String postId, Boolean lock) {
+        Post post = findByPostId(postId)
+        post.lock = lock
+        return postRepository.save(post)
+    }
 }

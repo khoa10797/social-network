@@ -79,6 +79,7 @@ public class MapperFacadeConfig {
                 .field("numberDislike", "numberDislike")
                 .field("numberComment", "numberComment")
                 .field("isNew", "isNew")
+                .field("lock", "lock")
                 .field("createdAt", "createdAt")
                 .field("updatedAt", "updatedAt")
                 .register();
@@ -92,6 +93,7 @@ public class MapperFacadeConfig {
                 .field("numberLike", "numberLike")
                 .field("numberDislike", "numberDislike")
                 .field("numberComment", "numberComment")
+                .field("lock", "lock")
                 .register();
 
         factory.classMap(Post.class, EsPost.class)

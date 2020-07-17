@@ -242,4 +242,16 @@ class PostController extends BaseController {
 
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
+
+    @PutMapping("/lock/{postId}")
+    ResponseEntity<BaseResponse> lockTopic(@PathVariable String postId, @RequestParam("lock") boolean lock) {
+        postService.updateLock(postId, lock)
+        PostResponse postResponse = postService.getByPostId(postId)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: postResponse
+        )
+        return new ResponseEntity<BaseResponse>(data, HttpStatus.OK)
+    }
 }

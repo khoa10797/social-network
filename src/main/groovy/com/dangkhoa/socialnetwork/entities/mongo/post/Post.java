@@ -21,6 +21,7 @@ public class Post {
     private Integer numberDislike;
     private Integer numberComment;
     private Boolean isNew;
+    private Boolean lock;
     private Long createdAt;
     private Long updatedAt;
 }

@@ -23,6 +23,7 @@ public class PostResponse {
     private String userStatus;
     private Boolean bookmark;
     private Boolean isNew;
+    private Boolean lock;
     private Long createdAt;
     private Long updatedAt;
 }
