@@ -66,10 +66,9 @@ class UserController extends BaseController {
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<ResponseData> update(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
+    @PutMapping
+    ResponseEntity<ResponseData> update(@RequestBody @Valid UserRequest userRequest) {
         User user = userMapperFacade.map(userRequest, User.class)
-        user.userId = id
         User savedUser = userService.save(user)
         UserResponse userResponse = userService.getByUserId(savedUser.userId)
         ResponseData data = new ResponseData(data: userResponse)

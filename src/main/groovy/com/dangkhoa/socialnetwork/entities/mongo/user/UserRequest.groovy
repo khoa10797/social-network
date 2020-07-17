@@ -2,6 +2,7 @@ package com.dangkhoa.socialnetwork.entities.mongo.user
 
 class UserRequest {
 
+    String userId
     String name
     Long dateOfBirth
     Integer gender

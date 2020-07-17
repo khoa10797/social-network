@@ -49,6 +49,7 @@ public class MapperFacadeConfig {
                 .register();
 
         factory.classMap(UserRequest.class, User.class)
+                .field("userId", "userId")
                 .field("name", "name")
                 .field("dateOfBirth", "dateOfBirth")
                 .field("gender", "gender")

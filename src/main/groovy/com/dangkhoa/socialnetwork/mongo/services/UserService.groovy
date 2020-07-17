@@ -93,9 +93,12 @@ class UserService {
 
     void setUpdateValue(User oldUser, User newUser) {
         oldUser.name = StringUtils.isBlank(newUser.name) ? oldUser.name : newUser.name
+        oldUser.intro = StringUtils.isBlank(newUser.intro) ? oldUser.intro : newUser.intro
+        oldUser.description = StringUtils.isBlank(newUser.description) ? oldUser.description : newUser.description
+        oldUser.avatar = StringUtils.isBlank(newUser.avatar) ? oldUser.avatar : newUser.avatar
         oldUser.dateOfBirth = newUser.dateOfBirth == null ? oldUser.dateOfBirth : newUser.dateOfBirth
         oldUser.gender = newUser.gender == null ? oldUser.gender : newUser.gender
-        oldUser.roleGroupIds = newUser.roleGroupIds == null ? oldUser.roleGroupIds : newUser.roleGroupIds
+        oldUser.roleGroupIds = CollectionUtils.isEmpty(newUser.roleGroupIds) ? oldUser.roleGroupIds : newUser.roleGroupIds
         oldUser.password = StringUtils.isBlank(newUser.password) ? oldUser.password : bCryptPasswordEncoder.encode(newUser.password)
         oldUser.updatedAt = new Date().getTime()
     }
