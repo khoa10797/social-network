@@ -59,7 +59,7 @@ class PostController extends BaseController {
         List<PostResponse> postResponses = postService.getByPostIds(postIds)
         Collections.shuffle(postResponses)
         if (postResponses.size() > 20) {
-            postResponses = postResponses.subList(0, 19)
+            postResponses = postResponses.subList(0, 49)
         }
 
         ResponseData data = new ResponseData(
