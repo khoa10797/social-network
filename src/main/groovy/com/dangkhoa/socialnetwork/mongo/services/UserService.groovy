@@ -98,8 +98,8 @@ class UserService {
         oldUser.avatar = StringUtils.isBlank(newUser.avatar) ? oldUser.avatar : newUser.avatar
         oldUser.dateOfBirth = newUser.dateOfBirth == null ? oldUser.dateOfBirth : newUser.dateOfBirth
         oldUser.gender = newUser.gender == null ? oldUser.gender : newUser.gender
+        oldUser.active = newUser.active == null ? oldUser.active : newUser.active
         oldUser.roleGroupIds = CollectionUtils.isEmpty(newUser.roleGroupIds) ? oldUser.roleGroupIds : newUser.roleGroupIds
-        oldUser.password = StringUtils.isBlank(newUser.password) ? oldUser.password : bCryptPasswordEncoder.encode(newUser.password)
         oldUser.updatedAt = new Date().getTime()
     }
 
@@ -138,5 +138,12 @@ class UserService {
         List<String> followerUserIds = userFollows.collect { it.followedUserId }
 
         return getByUserIds(followerUserIds)
+    }
+
+    User updateActive(String userId, Boolean active) {
+        User user = findByUserId(userId)
+        user.active = active
+
+        return save(user)
     }
 }

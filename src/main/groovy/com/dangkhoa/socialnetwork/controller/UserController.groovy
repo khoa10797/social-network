@@ -117,4 +117,16 @@ class UserController extends BaseController {
         ResponseData data = new ResponseData(data: userResponses)
         return new ResponseEntity<>(data, HttpStatus.OK)
     }
+
+    @PutMapping("/active/{userId}")
+    ResponseEntity<ResponseData> lockUser(@PathVariable String userId, @RequestParam("active") boolean active) {
+        User user = userService.updateActive(userId, active)
+
+        ResponseData data = new ResponseData(
+                statusCode: 200,
+                data: user
+        )
+
+        return new ResponseEntity<ResponseData>(data, HttpStatus.OK)
+    }
 }

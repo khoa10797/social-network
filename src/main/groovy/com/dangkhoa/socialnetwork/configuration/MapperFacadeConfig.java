@@ -42,6 +42,7 @@ public class MapperFacadeConfig {
                 .field("avatar", "avatar")
                 .field("roleGroupIds", "roleGroupIds")
                 .field("intro", "intro")
+                .field("active", "active")
                 .field("description", "description")
                 .field("numberFollow", "numberFollow")
                 .field("createdAt", "createdAt")
@@ -59,6 +60,7 @@ public class MapperFacadeConfig {
                 .field("roleGroupIds", "roleGroupIds")
                 .field("avatar", "avatar")
                 .field("intro", "intro")
+                .field("active", "active")
                 .field("description", "description")
                 .register();
 
