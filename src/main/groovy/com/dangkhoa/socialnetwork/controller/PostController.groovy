@@ -58,7 +58,7 @@ class PostController extends BaseController {
         List<String> postIds = (trendingPostIds + newPostIds).toSet().toList()
         List<PostResponse> postResponses = postService.getByPostIds(postIds)
         Collections.shuffle(postResponses)
-        if (postResponses.size() > 20) {
+        if (postResponses.size() > 50) {
             postResponses = postResponses.subList(0, 49)
         }
 
